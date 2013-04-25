@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # vbfunctions.sh
 #	common shell functions
@@ -46,4 +47,30 @@ runcommand() {
 	fi
 }
 export -f runcommand
+
+#
+# getoslist
+#	generate a list of OS type IDs and quoted descriptions
+#
+getoslist() {
+	VBoxManage list ostypes | egrep '^ID:|^Description:' | sed -e 's/^.*:  *//' |
+	while read name
+	do
+		read desc
+		echo "$name \"$desc\""
+	done | sort
+}
+export -f getoslist
+
+#
+# getostype
+#	Let the user choose an OS type from a menu
+#
+getostype() {
+	eval "dialog --stdout --default-item Linux26 \
+		--menu 'Select OS type, or <Cancel> to return' 0 0 0" \
+		$(getoslist)
+	return $?
+}
+export -f getostype
 
