@@ -6,7 +6,7 @@
 pdir=`dirname $0`
 pname=`basename $0`
 
-[ -n "$VBFUNCTIONS" ] && source $pdir/vbfunctions.sh
+[ -n "$VBFUNCTIONS" ] || source $pdir/vbfunctions.sh
 
 #
 #	set the background title, unless already set by caller
@@ -14,7 +14,7 @@ pname=`basename $0`
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Modify VM Parameters"
 
-VMLIST=`VBoxManage list vms | sed 's/["{}]//g'`
+VMLIST=`VBoxManage list vms | sed 's/["{}]//g' | sort`
 vm=`dialog --stdout --backtitle "$backtitle" --title "List of known VMs" \
 	--menu 'Select a VM to modify, or <Cancel> to return' 0 0 0 $VMLIST `
 [ $? = 0 ] || clearexit 0

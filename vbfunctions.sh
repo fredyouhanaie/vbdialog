@@ -3,7 +3,7 @@
 # vbfunctions.sh
 #	common shell functions
 
-export VBFUNCTIONS=1	# so that
+export VBFUNCTIONS=1
 
 #
 # getvmpar
