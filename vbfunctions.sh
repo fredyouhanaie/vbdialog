@@ -67,7 +67,9 @@ export -f getoslist
 #	Let the user choose an OS type from a menu
 #
 getostype() {
-	eval "dialog --stdout --default-item Linux26 \
+	defaultos=$1
+	: ${defaultos:=Linux26}
+	eval "dialog --stdout --default-item "$defaultos" \
 		--menu 'Select OS type, or <Cancel> to return' 0 0 0" \
 		$(getoslist)
 	return $?

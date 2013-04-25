@@ -6,6 +6,8 @@
 pdir=`dirname $0`
 pname=`basename $0`
 
+[ -n "$VBFUNCTIONS" ] || source $pdir/vbfunctions.sh
+
 #
 #	set the background title, unless already set by caller
 #
@@ -19,6 +21,7 @@ OSType=Linux26
 
 while :
 do
+	OSType=`getostype $OSType`
 	formdata=`dialog --stdout --backtitle "$backtitle" --title "Create VM" \
 		--form 'Note: I do not like whitespace in names!' 0 0 0 \
 		name 1 1 "$VMName" 1 10 10 10 \
@@ -27,21 +30,8 @@ do
 	set -- $formdata
 	vmname=$1
 	ostype=$2
-	command="$VBCREATE --name $vmname --ostype $ostype --register"
-	dialog --backtitle "$backtitle" --title "Ready to create VM?" --aspect 20 \
-		--yesno "About to run\n\n$command\n\nOK to proceed?" 0 0
-	retvalue=$?
-	if [ "$retvalue" = 0 ]
-	then
-		clear
-		echo "$command" >&2
-		echo >&2
-		$command
-		echo >&2
-		read -p "PRESS ENTER TO CONTUNUE"
-		echo >&2
-		break
-	fi
+	runcommand "Ready to Create VM?" "$VBCREATE --name $vmname --ostype $ostype --register"
+	[ $? = 0 ] && break
 	# so the master said NO, back to the form with current data
 	VMName="$vmname"
 	OSType="$ostype"
