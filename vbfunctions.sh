@@ -85,6 +85,7 @@ clearexit() {
 	echo "$pname: Terminated!" >&2
 	exit
 }
+export -f clearexit
 
 #
 # getnicparams
@@ -101,5 +102,44 @@ getnicparams() {
 	VBoxManage showvminfo $vm --machinereadable |
 		egrep "^nic[^=]+${nic}=" | awk -F= '{print $1 " " $2}'
 }
+export -f getnicparams
+
+#
+# modifynicmenu
+#	given a VM and NIC parameter, and list of allowed values
+#	let the user choose new value.
+#	The 3rd parameter is a blank separated list of allowed values.
+#	the allowed values for a given parameter can be obtain by running
+#	'VBoxManage modifyvm'
+#
+modifynicmenu() {
+	[ $# = 3 ] || return 1
+	vm="$1"
+	nicpar="$2"
+	valuelist="$3"
+	menulist=$( for v in $valuelist; do echo "$v $v"; done)
+	value=`getvmpar $vm $nicpar`
+	[ $? = 0 ] || return 1
+	dialog --stdout --backtitle "$backtitle" --title "$vm: $nicpar" \
+		--default-item $value --menu 'Select new value, or <Cancel> to return' 0 0 0 \
+		$menulist
+	return
+}
+export -f modifynicmenu
+
+#
+# modifynicinput
+modifynic() {
+	[ $# = 2 ] || return 1
+	vm="$1"
+	nicpar="$2"
+	value=`getvmpar $vm $nicpar`
+	[ $? = 0 ] || return 1
+	dialog --stdout --backtitle "$backtitle" --title "$vm $nicpar" \
+		--form 'Enter a new value, or <Cancel> to return' 0 0 0 \
+		"$nicpar" 1 1 "$value" 1 10 10 10
+	return
+}
+export -f modifynic
 
 
