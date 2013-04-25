@@ -23,17 +23,13 @@ export backtitle="Virtual Box"
 #
 while :
 do
-	exec 3>&1
-	choice=`dialog --backtitle "$backtitle" --title "Main Menu" --default-item list \
+	choice=`dialog --stdout --backtitle "$backtitle" --title "Main Menu" --default-item list \
 		--menu "Select sub-menu, or <Cancel> to quit" 0 0 0 \
 		createvm	"Create a new VM" \
 		list		"List sub-menu" \
 		modifyvm	"Modify VM sub-menu" \
-		showvminfo	"Show VM Info sub-menu" \
-		2>&1 1>&3`
-	retval=$?
-	exec 3>&-
-	[ "$retval" != 0 ] && break
+		showvminfo	"Show VM Info sub-menu"`
+	[ $? != 0 ] && break
 	command="$pdir/vb-${choice}.sh"
 	[ -x "$command" ] && $command
 done

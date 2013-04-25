@@ -19,15 +19,11 @@ OSType=Linux26
 
 while :
 do
-	exec 3>&1
-	formdata=`dialog --backtitle "$backtitle" --title "Create VM" \
+	formdata=`dialog --stdout --backtitle "$backtitle" --title "Create VM" \
 		--form 'Note: I do not like whitespace in names!' 0 0 0 \
 		name 1 1 "$VMName" 1 10 10 10 \
-		ostype 2 1 "$OSType" 2 10 10 10 \
-		2>&1 1>&3`
-	retvalue=$?
-	exec 3>&-
-	[ "$retvalue" = 0 ] || break
+		ostype 2 1 "$OSType" 2 10 10 10 `
+	[ $? = 0 ] || break
 	set -- $formdata
 	vmname=$1
 	ostype=$2

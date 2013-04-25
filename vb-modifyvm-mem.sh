@@ -24,14 +24,10 @@ VMmemory=`getvmpar $VMName memory`
 
 while :
 do
-	exec 3>&1
-	formdata=`dialog --backtitle "$backtitle" --title "$VMName: memory setting" \
+	formdata=`dialog --stdout --backtitle "$backtitle" --title "$VMName: memory setting" \
 		--form 'Memory setting in MB, or <Cancel> to return' 0 0 0 \
-		memory 1 1 "$VMmemory" 1 10 10 10 \
-		2>&1 1>&3`
-	retvalue=$?
-	exec 3>&-
-	[ "$retvalue" = 0 ] || break
+		memory 1 1 "$VMmemory" 1 10 10 10 `
+	[ $? = 0 ] || break
 	set -- $formdata
 	memory=$1
 	runcommand "Ready to Modify VM?" "$VBMODIFY $memory"

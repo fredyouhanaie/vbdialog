@@ -24,14 +24,10 @@ VMvrde=`getvmpar $VMName vrde`
 
 while :
 do
-	exec 3>&1
-	formdata=`dialog --backtitle "$backtitle" --title "$VMName: VRDE setting" \
+	formdata=`dialog --stdout --backtitle "$backtitle" --title "$VMName: VRDE setting" \
 		--form 'Enter on/off, or <Cancel> to return' 0 0 0 \
-		vrde 1 1 "$VMvrde" 1 10 10 10 \
-		2>&1 1>&3`
-	retvalue=$?
-	exec 3>&-
-	[ "$retvalue" = 0 ] || break
+		vrde 1 1 "$VMvrde" 1 10 10 10 `
+	[ $? = 0 ] || break
 	set -- $formdata
 	vrde=$1
 	runcommand "Ready to Modify VM?" "$VBMODIFY $vrde"
