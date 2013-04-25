@@ -6,6 +6,8 @@
 pdir=`dirname $0`
 pname=`basename $0`
 
+source $pdir/vbfunctions.sh
+
 # do we have an rc file?
 dialogrc="$pdir/vbdialogrc"
 [ -r "$dialogrc" ] && export DIALOGRC="$dialogrc"
@@ -24,9 +26,10 @@ do
 	exec 3>&1
 	choice=`dialog --backtitle "$backtitle" --title "Main Menu" --default-item list \
 		--menu "Select sub-menu, or <Cancel> to quit" 0 0 0 \
-		list		"List sub-menu" \
-		showvminfo	"Show VM Info sub-menu" \
 		createvm	"Create a new VM" \
+		list		"List sub-menu" \
+		modifyvm	"Modify VM sub-menu" \
+		showvminfo	"Show VM Info sub-menu" \
 		2>&1 1>&3`
 	retval=$?
 	exec 3>&-
