@@ -25,5 +25,5 @@ do
 	dialog --backtitle "$backtitle" --title "showvminfo $vm" --textbox $tmpfile 0 0 &&
 	rm $tmpfile
 done
-clear
-echo "$pname: Terminated!" >&2
+
+clearexit 0

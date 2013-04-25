@@ -45,8 +45,4 @@ do
 	rm $tmpfile
 done
 
-#
-#	We're done!
-#
-clear
-echo "$pname: Terminated!" >&2
+clearexit 0

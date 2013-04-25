@@ -37,5 +37,4 @@ do
 	OSType="$ostype"
 done
 
-clear
-echo "$pname: Terminated!" >&2
+clearexit 0

@@ -15,7 +15,7 @@ pname=`basename $0`
 backtitle="$backtitle - Memory"
 
 # we expect one arg, the VM name
-[ $# != 1 ] && exit 1
+[ $# != 1 ] && clearexit 1
 VMName="$1"
 
 VBMODIFY="VBoxManage modifyvm $VMName --memory"
@@ -36,5 +36,4 @@ do
 	VMMemory="$memory"
 done
 
-clear
-echo "$pname: Terminated!" >&2
+clearexit 0

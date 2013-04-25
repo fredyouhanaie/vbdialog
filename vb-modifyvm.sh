@@ -17,7 +17,7 @@ backtitle="$backtitle - Modify VM Parameters"
 VMLIST=`VBoxManage list vms | sed 's/["{}]//g'`
 vm=`dialog --stdout --backtitle "$backtitle" --title "List of known VMs" \
 	--menu 'Select a VM to modify, or <Cancel> to return' 0 0 0 $VMLIST `
-[ $? = 0 ] || exit
+[ $? = 0 ] || clearexit 0
 
 while :
 do
@@ -31,5 +31,4 @@ do
 	[ -x "$command" ] && $command $vm
 done
 
-clear
-echo "$pname: Terminated!" >&2
+clearexit 0

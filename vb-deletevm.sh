@@ -26,5 +26,4 @@ do
 	[ $? = 0 ] && break
 done
 
-clear
-echo "$pname: Terminated!" >&2
+clearexit 0

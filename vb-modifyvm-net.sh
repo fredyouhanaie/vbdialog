@@ -15,7 +15,7 @@ pname=`basename $0`
 backtitle="$backtitle - Network"
 
 # we expect one arg, the VM name
-[ $# != 1 ] && exit 1
+[ $# != 1 ] && clearexit 1
 VMName="$1"
 
 VBMODIFY="VBoxManage modifyvm $VMName "
@@ -56,4 +56,4 @@ do
 	done
 done
 
-clearexit
+clearexit 0

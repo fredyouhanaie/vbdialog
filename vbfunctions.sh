@@ -83,7 +83,7 @@ export -f getostype
 clearexit() {
 	clear
 	echo "$pname: Terminated!" >&2
-	exit
+	exit $1
 }
 export -f clearexit
 
