@@ -76,3 +76,30 @@ getostype() {
 }
 export -f getostype
 
+#
+# clearexit
+#	clear the screen and exit
+#
+clearexit() {
+	clear
+	echo "$pname: Terminated!" >&2
+	exit
+}
+
+#
+# getnicparams
+#	get a list of param/values pairs for a given VM/NIC
+#
+getnicparams() {
+	[ $# = 2 ] || return 1
+	vm=$1
+	nic=$2
+	state=`getvmpar $vm nic${nic}`
+	[ -n "$state" ] || return
+	echo "nic${nic} \"$state\""
+	[ "$state" = "none" ] && return
+	VBoxManage showvminfo $vm --machinereadable |
+		egrep "^nic[^=]+${nic}=" | awk -F= '{print $1 " " $2}'
+}
+
+
