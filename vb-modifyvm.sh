@@ -14,22 +14,21 @@ pname=`basename $0`
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Modify VM Parameters"
 
+VMLIST=`VBoxManage list vms | sed 's/["{}]//g'`
+vm=`dialog --stdout --backtitle "$backtitle" --title "List of known VMs" \
+	--menu 'Select a VM to modify, or <Cancel> to return' 0 0 0 $VMLIST `
+[ $? = 0 ] || exit
+
 while :
 do
-	VMLIST=`VBoxManage list vms | sed 's/["{}]//g'`
-	vm=`dialog --stdout --backtitle "$backtitle" --title "List of known VMs" \
-		--menu 'Select a VM to modify, or <Cancel> to return' 0 0 0 $VMLIST `
-	[ $? = 0 ] || break
 	param=`dialog --stdout --backtitle "$backtitle" --title "VM parameter for $vm" \
 		--menu 'Select Parameter, or <Cancel> to return' 0 0 0 \
 		mem	'Memory settings' \
 		net	'Network settings' \
 		vrde	'VRDE settings' `
-	if [ $? = 0 ]
-	then
-		command="$pdir/vb-modifyvm-${param}.sh"
-		[ -x "$command" ] && $command $vm
-	fi
+	[ $? = 0 ] || break
+	command="$pdir/vb-modifyvm-${param}.sh"
+	[ -x "$command" ] && $command $vm
 done
 
 clear
