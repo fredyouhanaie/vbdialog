@@ -16,9 +16,7 @@ VBSHOW='VBoxManage showvminfo '
 
 while :
 do
-	VMLIST=`VBoxManage list vms | sed 's/["{}]//g'`
-	vm=`dialog --stdout --backtitle "$backtitle" --title "List of known VMs" \
-		--menu 'Select VM, or <Cancel> to return' 0 0 0 $VMLIST `
+	vm=`pickavm`
 	[ $? = 0 ] || break
 	tmpfile=`mktemp` &&
 	$VBSHOW "$vm" >$tmpfile &&

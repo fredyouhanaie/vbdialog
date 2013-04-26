@@ -18,9 +18,7 @@ VBDELETE='VBoxManage unregistervm --delete'
 
 while :
 do
-	VMLIST=`VBoxManage list vms | sed 's/["{}]//g'`
-	vm=`dialog --stdout --backtitle "$backtitle" --title "List of current VMs" \
-		--menu 'Select a VM to delete, or <Cancel> to return' 0 0 0 $VMLIST `
+	vm=`pickavm`
 	[ $? = 0 ] || break
 	runcommand "Ready to Delete VM?" "$VBDELETE $vm"
 	[ $? = 0 ] && break

@@ -142,4 +142,16 @@ modifynic() {
 }
 export -f modifynic
 
+#
+# pickavm
+#	let the user pick a vm from the list
+#
+pickavm() {
+	VMLIST=`VBoxManage list vms | sed 's/["{}]//g' | sort`
+	dialog --stdout --backtitle "$backtitle" --title "List of current VMs" \
+		--menu 'Select a VM, or <Cancel> to return' 0 0 0 $VMLIST
+	return
+}
+export -f pickavm
+
 
