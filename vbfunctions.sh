@@ -154,4 +154,51 @@ pickavm() {
 }
 export -f pickavm
 
+#
+# getfilename
+#	let user pick a directory/file
+#	$1	title
+#	$2	initial path
+#
+getfilename() {
+	[ $# = 2 ] || return 1
+	dialog --stdout --backtitle "$backtitle" --title "$1" --dselect "$2" 0 0
+	return
+}
+export -f getfilename
+
+#
+# getnumber
+#	ask user for a number
+#	$1	title
+#	$2	default value
+#
+getnumber() {
+	[ $# = 2 ] || return 1
+	dialog --stdout --backtitle "$backtitle" --title "$1" \
+		--inputbox 'Enter value, or <Cancel> to return' 0 0 "$2"
+	return
+}
+export -f getnumber
+
+#
+# getselection
+#	let user pick an option from a selection
+#	$1	title
+#	$2	allowed values
+#	$3	default selection
+#
+getselection() {
+	[ $# = 3 ] || return 1
+	title="$1"
+	vlist="$2"
+	default="$3"
+	menulist=$( for v in $vlist; do echo "$v $v"; done)
+	dialog --stdout --backtitle "$backtitle" --title "$title" \
+		--default-item "$default" --menu 'Select new value, or <Cancel> to return' 0 0 0 \
+		$menulist
+	return
+}
+export -f getselection
+
 
