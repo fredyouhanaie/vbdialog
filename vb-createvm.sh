@@ -22,6 +22,7 @@ OSType=Linux26
 while :
 do
 	OSType=`getostype $OSType`
+	[ $? = 0 ] || break
 	formdata=`dialog --stdout --backtitle "$backtitle" --title "Create VM" \
 		--form 'Note: I do not like whitespace in names!' 0 0 0 \
 		name 1 1 "$VMName" 1 10 10 10 \
