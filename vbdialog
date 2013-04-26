@@ -30,7 +30,8 @@ do
 		deletevm	"Delete a VM" \
 		list		"List sub-menu" \
 		modifyvm	"Modify VM sub-menu" \
-		showvminfo	"Show VM Info sub-menu"`
+		showvminfo	"Show VM Info sub-menu" \
+		storagectl	"Storage Controller sub-menu"`
 	[ $? != 0 ] && break
 	command="$pdir/vb-${choice}.sh"
 	[ -x "$command" ] && $command
