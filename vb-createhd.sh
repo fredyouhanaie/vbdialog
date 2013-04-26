@@ -35,7 +35,7 @@ do
 		case $param in
 		File)	HDfile=`getfilename 'HD filename' .`
 			;;
-		Size)	HDsize=`getnumber 'HD size in MB' "$HDsize"`
+		Size)	HDsize=`getstring 'HD size in MB' "$HDsize"`
 			;;
 		Format)	HDformat=`getselection 'HD format' 'VDI VHD VMDK' "$HDformat"`
 			;;

@@ -168,18 +168,18 @@ getfilename() {
 export -f getfilename
 
 #
-# getnumber
-#	ask user for a number
+# getstring
+#	ask user for a name/number
 #	$1	title
 #	$2	default value
 #
-getnumber() {
+getstring() {
 	[ $# = 2 ] || return 1
 	dialog --stdout --backtitle "$backtitle" --title "$1" \
 		--inputbox 'Enter value, or <Cancel> to return' 0 0 "$2"
 	return
 }
-export -f getnumber
+export -f getstring
 
 #
 # getselection
