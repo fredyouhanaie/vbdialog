@@ -31,6 +31,7 @@ do
 		list		"List sub-menu" \
 		modifyvm	"Modify VM sub-menu" \
 		showvminfo	"Show VM Info sub-menu" \
+		stattach	"Storage Attachment sub-menu" \
 		storagectl	"Storage Controller sub-menu"`
 	[ $? != 0 ] && break
 	command="$pdir/vb-${choice}.sh"

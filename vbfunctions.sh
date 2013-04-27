@@ -162,7 +162,7 @@ export -f pickavm
 #
 getfilename() {
 	[ $# = 2 ] || return 1
-	dialog --stdout --backtitle "$backtitle" --title "$1" --dselect "$2" 0 0
+	dialog --stdout --backtitle "$backtitle" --title "$1" --fselect "$2" 0 0
 	return
 }
 export -f getfilename
@@ -236,4 +236,14 @@ getsctlname() {
 	return
 }
 export -f getsctlname
+
+#
+# getdeffolder
+#	get and return the default machine folder
+#
+getdeffolder() {
+	VBoxManage list systemproperties |
+		sed -ne 's/Default machine folder:  *//p'
+}
+export -f getdeffolder
 

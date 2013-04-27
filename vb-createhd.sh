@@ -16,6 +16,8 @@ backtitle="$backtitle - Create HD"
 
 VBCREATE='VBoxManage createhd'
 
+HDfolder=$(getdeffolder)
+
 HDfile=''
 HDsize=0
 HDformat='VDI'
@@ -33,7 +35,7 @@ do
 		[ $retval = 3 ] && break
 		[ $retval = 0 ] || clearexit 1
 		case $param in
-		File)	HDfile=`getfilename 'HD filename' .`
+		File)	HDfile=`getfilename 'HD filename' "${HDfolder}/"`
 			;;
 		Size)	HDsize=`getstring 'HD size in MB' "$HDsize"`
 			;;
