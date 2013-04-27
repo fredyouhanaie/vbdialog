@@ -10,36 +10,6 @@ pname=`basename $0`
 
 
 #
-# pickasctl
-#	show a list of storage controller(s) for a vm, let user pick one,
-#	return index of the controller
-#
-pickasctl() {
-	ctlList=`vboxmanage showvminfo "$vm" --machinereadable |
-		grep '^storagecontrollername' |
-		sed -e 's/^storagecontrollername//' -e 's/ /_/' -e 's/=/ /'`
-	if [ -n "$ctlList" ] 
-	then
-		dialog --stdout --backtitle "$backtitle" --title "$vm: Current Storage Controllers" \
-			--menu 'Select a Storage Controller, or <Cancel> to return' 0 0 0 $ctlList
-		return
-	else
-		dialog --stdout --backtitle "$backtitle" --msgbox "There are no Storage Controllers!" 5 44
-		return 1
-	fi
-}
-
-#
-# getsctlname
-#	return name of controller for current VM
-#
-getsctlname() {
-	[ $# = 1 ] || return 1
-	getvmpar "$vm" "storagecontrollername${1}"
-	return
-}
-
-#
 # add_ctl
 #	let user add a new controller to the current VM
 #
@@ -83,8 +53,8 @@ add_ctl() {
 #	let user modify selected setting of a controller
 #
 modify_ctl() {
-	ctl=`pickasctl $vm` || return 1
-	ctlName=`getsctlname $ctl` || return 1
+	ctl=`pickasctl "$vm"` || return 1
+	ctlName=`getsctlname "$vm" "$ctl"` || return 1
 	ctlBoot0=`getvmpar $vm storagecontrollerbootable${ctl}` || return 1
 	ctlBoot=$ctlBoot0
 	ctlChip0=`getvmpar $vm storagecontrollertype${ctl}` || return 1
@@ -143,7 +113,7 @@ modify_ctl() {
 #	let user pick and delete an existing controller
 #
 remove_ctl() {
-	ctlName=$( getsctlname `pickasctl $vm` )
+	ctlName=$( getsctlname "$vm" `pickasctl "$vm"` )
 	[ $? = 0 ] || return 1
 	runcommand "Ready to remove storage Controller?" "VBoxManage storagectl $vm --name $ctlName --remove"
 	return
@@ -172,28 +142,25 @@ list_ctl() {
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Storage Controller"
 
+vm=`pickavm`
+[ $? = 0 ] || clearexit 1
+
 while :
 do
-	vm=`pickavm`
+	cmd=`dialog --stdout --backtitle "$backtitle" --title "$vm: Storage Controller" \
+		--default-item list \
+		--menu 'Select option, or <Cancel> to return' 0 0 0 \
+		add	'Add a Controller' \
+		list	'List Storage Controllers' \
+		modify	'Modify Controller parameters' \
+		remove	'Remove a Controller'`
 	[ $? = 0 ] || break
-
-	while :
-	do
-		cmd=`dialog --stdout --backtitle "$backtitle" --title "$vm: Storage Controller" \
-			--default-item list \
-			--menu 'Select option, or <Cancel> to return' 0 0 0 \
-			add	'Add a Controller' \
-			list	'List Storage Controllers' \
-			modify	'Modify Controller parameters' \
-			remove	'Remove a Controller'`
-		[ $? = 0 ] || break
-		case "$cmd" in
-			add)	add_ctl ;;
-			list)	list_ctl ;;
-			modify)	modify_ctl ;;
-			remove)	remove_ctl
-		esac
-	done
+	case "$cmd" in
+		add)	add_ctl ;;
+		list)	list_ctl ;;
+		modify)	modify_ctl ;;
+		remove)	remove_ctl
+	esac
 done
 
 clearexit 0

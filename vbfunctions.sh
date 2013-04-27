@@ -201,4 +201,39 @@ getselection() {
 }
 export -f getselection
 
+#
+# pickasctl
+#	show a list of storage controller(s) for a vm, let user pick one,
+#	return index of the controller
+#
+pickasctl() {
+	[ $# = 1 ] || return 1
+	vm="$1"
+	ctlList=`vboxmanage showvminfo "$vm" --machinereadable |
+		grep '^storagecontrollername' |
+		sed -e 's/^storagecontrollername//' -e 's/ /_/' -e 's/=/ /'`
+	if [ -n "$ctlList" ] 
+	then
+		dialog --stdout --backtitle "$backtitle" --title "$vm: Current Storage Controllers" \
+			--menu 'Select a Storage Controller, or <Cancel> to return' 0 0 0 $ctlList
+		return
+	else
+		dialog --stdout --backtitle "$backtitle" --msgbox "There are no Storage Controllers!" 5 44
+		return 1
+	fi
+}
+export -f pickasctl
+
+#
+# getsctlname
+#	return name of controller for a VM
+#	$1	VM
+#	$2	S/Controller index
+#
+getsctlname() {
+	[ $# = 2 ] || return 1
+	getvmpar "$1" "storagecontrollername${2}"
+	return
+}
+export -f getsctlname
 
