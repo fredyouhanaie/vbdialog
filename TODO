@@ -13,8 +13,6 @@
 	rtcutc
 	etc.
 
-- license and copyright notices
-
 - tidy up
 	- consistent use of backticks and $()
 	- consistent header lines for scripts
