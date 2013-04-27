@@ -1,0 +1,21 @@
+
+- move all storage stuff to a separate menu
+	main -> storage -> hd/ctl/attach
+
+- modifyvm-vrde.sh
+	- similar to the nicX ones
+	on/off
+	set params
+
+- modifyvm-system.sh
+	- various params
+	memory
+	rtcutc
+	etc.
+
+- license and copyright notices
+
+- tidy up
+	- consistent use of backticks and $()
+	- consistent header lines for scripts
+
