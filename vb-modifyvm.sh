@@ -1,7 +1,11 @@
 #!/bin/bash
-
-# vb-modifyvm
+#
+# vb-modifyvm.sh
 #	Modify VM parameters
+#
+# Copyright (c) 2013 Fred Youhanaie
+#	http://www.gnu.org/licenses/gpl-2.0.html
+#
 
 pdir=`dirname $0`
 pname=`basename $0`

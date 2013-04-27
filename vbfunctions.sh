@@ -1,7 +1,11 @@
 #!/bin/bash
-
+#
 # vbfunctions.sh
 #	common shell functions
+#
+# Copyright (c) 2013 Fred Youhanaie
+#	http://www.gnu.org/licenses/gpl-2.0.html
+#
 
 export VBFUNCTIONS=1
 
