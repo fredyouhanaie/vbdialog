@@ -19,8 +19,14 @@ getvmpar() {
 	vm=$1
 	par=$2
 	VBoxManage showvminfo $vm --machinereadable |
-		awk -F= '$1==''"'$par'"'' {print $2}' |
-		sed -e 's/^"//' -e 's/"$//'
+		case "$par" in
+		rtcuseutc)
+			sed -ne "s/^Time offset=[0-9][0-9]*$par=\(.*\)$/\1/p"
+			;;
+		*)
+			sed -ne "s/$par=\(.*\)$/\1/p"
+			;;
+		esac | sed -e 's/^"//' -e 's/"$//'
 }
 export -f getvmpar
 

@@ -6,12 +6,6 @@
 	- move the repeated tmpfile stuff into a single funcion
 	- new function for on/off settings
 
-- modifyvm-system.sh
-	- various params
-	memory
-	rtcutc
-	etc.
-
 - modifyvm-net
 	- nat settings
 	- can we use the generic input functions instead of the nic
