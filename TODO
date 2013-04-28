@@ -13,7 +13,3 @@
 	rtcutc
 	etc.
 
-- tidy up
-	- consistent use of backticks and $()
-	- consistent header lines for scripts
-

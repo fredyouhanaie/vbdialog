@@ -7,8 +7,8 @@
 #	http://www.gnu.org/licenses/gpl-2.0.html
 #
 
-pdir=`dirname $0`
-pname=`basename $0`
+pdir=$(dirname $0)
+pname=$(basename $0)
 
 [ -n "$VBFUNCTIONS" ] || source $pdir/vbfunctions.sh
 
@@ -23,32 +23,32 @@ add_ctl() {
 	ctlChip=PIIX4
 	while :
 	do
-		param=`dialog --stdout --backtitle "$backtitle" --title "$vm: Adding Storage Controller" \
+		param=$(dialog --stdout --backtitle "$backtitle" --title "$vm: Adding Storage Controller" \
 			--extra-button --extra-label 'OK' --ok-label 'Change' \
 			--menu 'Set parameters, or <Cancel> to return' 0 0 0 \
 			Name	"$ctlName" \
 			Type	"$ctlType" \
-			Chip	"$ctlChip"`
+			Chip	"$ctlChip")
 		retval=$?
 		[ $retval = 3 ] && break
 		[ $retval = 0 ] || return 1
 		case $param in
 		Name)
-			ctlName=`getstring 'Controller name' "$ctlName"`
+			ctlName=$(getstring 'Controller name' "$ctlName")
 			;;
 		Type)
-			ctlType=`getselection 'Controller Bus type' \
-				'floppy ide sas sata scsi' "$ctlType"`
+			ctlType=$(getselection 'Controller Bus type' \
+				'floppy ide sas sata scsi' "$ctlType")
 			;;
 		Chip)
-			ctlChip=`getselection 'Controller Chipset type' \
+			ctlChip=$(getselection 'Controller Chipset type' \
 				'BusLogic I82078 ICH6 IntelAHCI LSILogic LSILogicSAS PIIX3 PIIX4' \
-				"$ctlType"`
+				"$ctlType")
 			;;
 		esac
 	done
 	runcommand "Ready to add Storage Controller?" \
-		"VBoxManage storagectl $vm --name $ctlName --add $ctlType --controller $ctlChip"
+		"VBoxManage storagectl '$vm' --name '$ctlName' --add $ctlType --controller $ctlChip"
 	return
 }
 
@@ -57,42 +57,42 @@ add_ctl() {
 #	let user modify selected setting of a controller
 #
 modify_ctl() {
-	ctl=`pickasctl "$vm"` || return 1
-	ctlName=`getsctlname "$vm" "$ctl"` || return 1
-	ctlBoot0=`getvmpar $vm storagecontrollerbootable${ctl}` || return 1
+	ctl=$(pickasctl "$vm") || return 1
+	ctlName=$(getsctlname "$vm" "$ctl") || return 1
+	ctlBoot0=$(getvmpar $vm storagecontrollerbootable${ctl}) || return 1
 	ctlBoot=$ctlBoot0
-	ctlChip0=`getvmpar $vm storagecontrollertype${ctl}` || return 1
+	ctlChip0=$(getvmpar $vm storagecontrollertype${ctl}) || return 1
 	ctlChip=$ctlChip0
-	ctlPcount0=`getvmpar $vm storagecontrollerportcount${ctl}` || return 1
+	ctlPcount0=$(getvmpar $vm storagecontrollerportcount${ctl}) || return 1
 	ctlPcount=$ctlPcount0
 	while :
 	do
-		param=`dialog --stdout --backtitle "$backtitle" --title "$vm: Modifying $ctlName" \
+		param=$(dialog --stdout --backtitle "$backtitle" --title "$vm: Modifying $ctlName" \
 			--extra-button --extra-label 'OK' --ok-label 'Change' \
 			--menu 'Set parameters, or <Cancel> to return' 0 0 0 \
 			Boot	"$ctlBoot" \
 			Chip	"$ctlChip" \
-			Ports	"$ctlPcount" `
+			Ports	"$ctlPcount" )
 		retval=$?
 		[ $retval = 3 ] && break
 		[ $retval = 0 ] || return 1
 		case $param in
 		Boot)
-			ctlBoot=`getselection 'Controller Bootable state' 'on off' "$ctlBoot"`
+			ctlBoot=$(getselection 'Controller Bootable state' 'on off' "$ctlBoot")
 			;;
 		Chip)
-			ctlChip=`getselection 'Controller Chipset type' \
+			ctlChip=$(getselection 'Controller Chipset type' \
 				'BusLogic I82078 ICH6 IntelAHCI LSILogic LSILogicSAS PIIX3 PIIX4' \
-				"$ctlType"`
+				"$ctlType")
 			;;
 		Ports)
-			ctlPcount=`getstring 'Port Count' "$ctlPcount"`
+			ctlPcount=$(getstring 'Port Count' "$ctlPcount")
 			;;
 		esac
 	done
 	# has anything changed?
 	change=no
-	runcmd="VBoxManage storagectl $vm --name $ctlName"
+	runcmd="VBoxManage storagectl '$vm' --name '$ctlName'"
 	if [ "$ctlBoot0" != "$ctlBoot" ]
 	then
 		runcmd="$runcmd --bootable $ctlBoot"
@@ -117,9 +117,9 @@ modify_ctl() {
 #	let user pick and delete an existing controller
 #
 remove_ctl() {
-	ctlName=$( getsctlname "$vm" `pickasctl "$vm"` )
+	ctlName=$( getsctlname "$vm" $(pickasctl "$vm") )
 	[ $? = 0 ] || return 1
-	runcommand "Ready to remove storage Controller?" "VBoxManage storagectl $vm --name $ctlName --remove"
+	runcommand "Ready to remove storage Controller?" "VBoxManage storagectl '$vm' --name '$ctlName' --remove"
 	return
 }
 
@@ -129,7 +129,7 @@ remove_ctl() {
 #
 list_ctl() {
 	dialogcmd="dialog --stdout --backtitle '$backtitle' --title '$vm: Storage Controller(s)'"
-	tmpfile=`mktemp`
+	tmpfile=$(mktemp)
 	VBoxManage showvminfo $vm | grep '^Storage Controller' >$tmpfile
 	if [ -s "$tmpfile" ]
 	then
@@ -146,18 +146,18 @@ list_ctl() {
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Storage Controller"
 
-vm=`pickavm`
+vm=$(pickavm)
 [ $? = 0 ] || clearexit 1
 
 while :
 do
-	cmd=`dialog --stdout --backtitle "$backtitle" --title "$vm: Storage Controller" \
+	cmd=$(dialog --stdout --backtitle "$backtitle" --title "$vm: Storage Controller" \
 		--default-item list \
 		--menu 'Select option, or <Cancel> to return' 0 0 0 \
 		add	'Add a Controller' \
 		list	'List Storage Controllers' \
 		modify	'Modify Controller parameters' \
-		remove	'Remove a Controller'`
+		remove	'Remove a Controller')
 	[ $? = 0 ] || break
 	case "$cmd" in
 		add)	add_ctl ;;

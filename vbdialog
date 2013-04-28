@@ -7,8 +7,8 @@
 #	http://www.gnu.org/licenses/gpl-2.0.html
 #
 
-pdir=`dirname $0`
-pname=`basename $0`
+pdir=$(dirname $0)
+pname=$(basename $0)
 
 source $pdir/vbfunctions.sh
 
@@ -27,7 +27,7 @@ export backtitle="Virtual Box"
 #
 while :
 do
-	choice=`dialog --stdout --backtitle "$backtitle" --title "Main Menu" --default-item list \
+	choice=$(dialog --stdout --backtitle "$backtitle" --title "Main Menu" --default-item list \
 		--menu "Select sub-menu, or <Cancel> to quit" 0 0 0 \
 		createhd	"Create a new HD" \
 		createvm	"Create a new VM" \
@@ -36,7 +36,7 @@ do
 		modifyvm	"Modify VM sub-menu" \
 		showvminfo	"Show VM Info sub-menu" \
 		stattach	"Storage Attachment sub-menu" \
-		storagectl	"Storage Controller sub-menu"`
+		storagectl	"Storage Controller sub-menu")
 	[ $? != 0 ] && break
 	command="$pdir/vb-${choice}.sh"
 	[ -x "$command" ] && $command

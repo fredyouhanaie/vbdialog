@@ -40,7 +40,7 @@ runcommand() {
 		clear
 		echo "$command" >&2
 		echo >&2
-		$command
+		eval "$command"
 		res=$?
 		echo >&2
 		read -p "[result=$res]	PRESS ENTER TO CONTINUE"
@@ -99,7 +99,7 @@ getnicparams() {
 	[ $# = 2 ] || return 1
 	vm=$1
 	nic=$2
-	state=`getvmpar $vm nic${nic}`
+	state=$(getvmpar $vm nic${nic})
 	[ -n "$state" ] || return
 	echo "nic${nic} \"$state\""
 	[ "$state" = "none" ] && return
@@ -122,7 +122,7 @@ modifynicmenu() {
 	nicpar="$2"
 	valuelist="$3"
 	menulist=$( for v in $valuelist; do echo "$v $v"; done)
-	value=`getvmpar $vm $nicpar`
+	value=$(getvmpar $vm $nicpar)
 	[ $? = 0 ] || return 1
 	dialog --stdout --backtitle "$backtitle" --title "$vm: $nicpar" \
 		--default-item $value --menu 'Select new value, or <Cancel> to return' 0 0 0 \
@@ -137,7 +137,7 @@ modifynic() {
 	[ $# = 2 ] || return 1
 	vm="$1"
 	nicpar="$2"
-	value=`getvmpar $vm $nicpar`
+	value=$(getvmpar $vm $nicpar)
 	[ $? = 0 ] || return 1
 	dialog --stdout --backtitle "$backtitle" --title "$vm $nicpar" \
 		--form 'Enter a new value, or <Cancel> to return' 0 0 0 \
@@ -151,7 +151,7 @@ export -f modifynic
 #	let the user pick a vm from the list
 #
 pickavm() {
-	VMLIST=`VBoxManage list vms | sed 's/["{}]//g' | sort`
+	VMLIST=$(VBoxManage list vms | sed 's/["{}]//g' | sort)
 	dialog --stdout --backtitle "$backtitle" --title "List of current VMs" \
 		--menu 'Select a VM, or <Cancel> to return' 0 0 0 $VMLIST
 	return
@@ -213,9 +213,9 @@ export -f getselection
 pickasctl() {
 	[ $# = 1 ] || return 1
 	vm="$1"
-	ctlList=`vboxmanage showvminfo "$vm" --machinereadable |
+	ctlList=$(vboxmanage showvminfo "$vm" --machinereadable |
 		grep '^storagecontrollername' |
-		sed -e 's/^storagecontrollername//' -e 's/ /_/' -e 's/=/ /'`
+		sed -e 's/^storagecontrollername//' -e 's/ /_/' -e 's/=/ /')
 	if [ -n "$ctlList" ] 
 	then
 		dialog --stdout --backtitle "$backtitle" --title "$vm: Current Storage Controllers" \

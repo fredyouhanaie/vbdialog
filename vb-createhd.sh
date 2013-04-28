@@ -7,8 +7,8 @@
 #	http://www.gnu.org/licenses/gpl-2.0.html
 #
 
-pdir=`dirname $0`
-pname=`basename $0`
+pdir=$(dirname $0)
+pname=$(basename $0)
 
 [ -n "$VBFUNCTIONS" ] || source $pdir/vbfunctions.sh
 
@@ -31,19 +31,19 @@ do
 	# Get the parameters
 	while :
 	do
-		param=`dialog --stdout --backtitle "$backtitle" --title "Create HD" \
+		param=$(dialog --stdout --backtitle "$backtitle" --title "Create HD" \
 			--extra-button --extra-label 'OK' --ok-label 'Change' \
 			--menu '<Change> parameter, or <Cancel> to return' 0 0 0 \
-			File "$HDfile" Size "$HDsize MB" Format "$HDformat"`
+			File "$HDfile" Size "$HDsize MB" Format "$HDformat")
 		retval=$?
 		[ $retval = 3 ] && break
 		[ $retval = 0 ] || clearexit 1
 		case $param in
-		File)	HDfile=`getfilename 'HD filename' "${HDfolder}/"`
+		File)	HDfile=$(getfilename 'HD filename' "${HDfolder}/")
 			;;
-		Size)	HDsize=`getstring 'HD size in MB' "$HDsize"`
+		Size)	HDsize=$(getstring 'HD size in MB' "$HDsize")
 			;;
-		Format)	HDformat=`getselection 'HD format' 'VDI VHD VMDK' "$HDformat"`
+		Format)	HDformat=$(getselection 'HD format' 'VDI VHD VMDK' "$HDformat")
 			;;
 		esac
 	done

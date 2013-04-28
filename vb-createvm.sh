@@ -7,8 +7,8 @@
 #	http://www.gnu.org/licenses/gpl-2.0.html
 #
 
-pdir=`dirname $0`
-pname=`basename $0`
+pdir=$(dirname $0)
+pname=$(basename $0)
 
 [ -n "$VBFUNCTIONS" ] || source $pdir/vbfunctions.sh
 
@@ -25,12 +25,12 @@ OSType=Linux26
 
 while :
 do
-	OSType=`getostype $OSType`
+	OSType=$(getostype $OSType)
 	[ $? = 0 ] || break
-	formdata=`dialog --stdout --backtitle "$backtitle" --title "Create VM" \
+	formdata=$(dialog --stdout --backtitle "$backtitle" --title "Create VM" \
 		--form 'Note: I do not like whitespace in names!' 0 0 0 \
 		name 1 1 "$VMName" 1 10 10 10 \
-		ostype 2 1 "$OSType" 2 10 10 10 `
+		ostype 2 1 "$OSType" 2 10 10 10 )
 	[ $? = 0 ] || break
 	set -- $formdata
 	vmname=$1

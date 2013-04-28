@@ -7,8 +7,8 @@
 #	http://www.gnu.org/licenses/gpl-2.0.html
 #
 
-pdir=`dirname $0`
-pname=`basename $0`
+pdir=$(dirname $0)
+pname=$(basename $0)
 
 [ -n "$VBFUNCTIONS" ] || source $pdir/vbfunctions.sh
 
@@ -17,6 +17,7 @@ pname=`basename $0`
 #	get a list of attached devices for a given VM and controller
 #
 ctlattlist() {
+	[ $# = 2 ] || return 1
 	vm="$1"
 	ctlname="$2"
 	VBoxManage showvminfo "$vm" --machinereadable |
@@ -29,7 +30,7 @@ ctlattlist() {
 #	attach a device to a storage controller
 #
 do_attach() {
-	ctlname=$(getsctlname "$vm" `pickasctl "$vm"`) || return 1
+	ctlname=$(getsctlname "$vm" $(pickasctl "$vm")) || return 1
 	devlist=$(ctlattlist "$vm" "$ctlname") || return 1
 	while :
 	do
@@ -46,7 +47,7 @@ do_attach() {
 			'additions emptydrive filename none' filename ) || return 1
 		if [ "$med" = filename ]
 		then
-			medium=$(getfilename 'Disk filename?' "`getdeffolder`/") || return 1
+			medium=$(getfilename 'Disk filename?' "$(getdeffolder)/") || return 1
 		else
 			medium="$med"
 		fi
@@ -61,9 +62,9 @@ do_attach() {
 #	show a listing of the devices for current VM and a storage controller
 #
 do_list() {
-	ctlname=$(getsctlname "$vm" `pickasctl "$vm"`) || return 1
-	tmpfile=`mktemp` &&
-	ctlattlist "$vam" "$ctlname" >$tmpfile &&
+	ctlname=$(getsctlname "$vm" $(pickasctl "$vm")) || return 1
+	tmpfile=$(mktemp) &&
+	ctlattlist "$vm" "$ctlname" >$tmpfile &&
 	dialog --stdout --backtitle "$backtitle" \
 		--title "$vm: $ctlname: Current Attached devices" \
 		--textbox $tmpfile 0 0
@@ -76,16 +77,16 @@ do_list() {
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Storage"
 
-vm=`pickavm`
+vm=$(pickavm)
 [ $? = 0 ] || clearexit 0
 
 while :
 do
-	param=`dialog --stdout --backtitle "$backtitle" --title "$vm: Storage Attachment" \
+	param=$(dialog --stdout --backtitle "$backtitle" --title "$vm: Storage Attachment" \
 		--default-item list \
 		--menu 'Select option, or <Cancel> to return' 0 0 0 \
 		attach	'Attach/remove a device'  \
-		list	'List attached devices' `
+		list	'List attached devices' )
 	[ $? = 0 ] || break
 	case "$param" in
 	attach)	do_attach;;

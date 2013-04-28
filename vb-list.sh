@@ -7,8 +7,8 @@
 #	http://www.gnu.org/licenses/gpl-2.0.html
 #
 
-pdir=`dirname $0`
-pname=`basename $0`
+pdir=$(dirname $0)
+pname=$(basename $0)
 
 #
 #	set the background title, unless already set by caller
@@ -20,7 +20,7 @@ VBLIST='VBoxManage list '
 
 while :
 do
-	choice=`dialog \
+	choice=$(dialog \
 		--stdout --backtitle "$backtitle" --title "List Options" --default-item vms \
 		--menu "Select option, or <Cancel> to return" 0 0 0 \
 			bridgedifs "" \
@@ -41,9 +41,9 @@ do
 			systemproperties "" \
 			usbfilters "" \
 			usbhost "" \
-			vms "" `
+			vms "" )
 	[ $? = 0 ] || break
-	tmpfile=`mktemp` &&
+	tmpfile=$(mktemp) &&
 	$VBLIST $choice >$tmpfile &&
 	dialog --backtitle "$backtitle" --title "list $choice" --textbox $tmpfile 0 0 &&
 	rm $tmpfile

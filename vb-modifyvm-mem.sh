@@ -7,8 +7,8 @@
 #	http://www.gnu.org/licenses/gpl-2.0.html
 #
 
-pdir=`dirname $0`
-pname=`basename $0`
+pdir=$(dirname $0)
+pname=$(basename $0)
 
 [ -n "$VBFUNCTIONS" ] || source $pdir/vbfunctions.sh
 
@@ -24,13 +24,13 @@ VMName="$1"
 
 VBMODIFY="VBoxManage modifyvm $VMName --memory"
 
-VMmemory=`getvmpar $VMName memory`
+VMmemory=$(getvmpar $VMName memory)
 
 while :
 do
-	formdata=`dialog --stdout --backtitle "$backtitle" --title "$VMName: memory setting" \
+	formdata=$(dialog --stdout --backtitle "$backtitle" --title "$VMName: memory setting" \
 		--form 'Memory setting in MB, or <Cancel> to return' 0 0 0 \
-		memory 1 1 "$VMmemory" 1 10 10 10 `
+		memory 1 1 "$VMmemory" 1 10 10 10 )
 	[ $? = 0 ] || break
 	set -- $formdata
 	memory=$1

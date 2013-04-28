@@ -7,8 +7,8 @@
 #	http://www.gnu.org/licenses/gpl-2.0.html
 #
 
-pdir=`dirname $0`
-pname=`basename $0`
+pdir=$(dirname $0)
+pname=$(basename $0)
 
 #
 #	set the background title, unless already set by caller
@@ -20,9 +20,9 @@ VBSHOW='VBoxManage showvminfo '
 
 while :
 do
-	vm=`pickavm`
+	vm=$(pickavm)
 	[ $? = 0 ] || break
-	tmpfile=`mktemp` &&
+	tmpfile=$(mktemp) &&
 	$VBSHOW "$vm" >$tmpfile &&
 	dialog --backtitle "$backtitle" --title "showvminfo $vm" --textbox $tmpfile 0 0 &&
 	rm $tmpfile

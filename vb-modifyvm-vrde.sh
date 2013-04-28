@@ -7,8 +7,8 @@
 #	http://www.gnu.org/licenses/gpl-2.0.html
 #
 
-pdir=`dirname $0`
-pname=`basename $0`
+pdir=$(dirname $0)
+pname=$(basename $0)
 
 [ -n "$VBFUNCTIONS" ] || source $pdir/vbfunctions.sh
 
@@ -24,13 +24,13 @@ VMName="$1"
 
 VBMODIFY="VBoxManage modifyvm $VMName --vrde"
 
-VMvrde=`getvmpar $VMName vrde`
+VMvrde=$(getvmpar $VMName vrde)
 
 while :
 do
-	formdata=`dialog --stdout --backtitle "$backtitle" --title "$VMName: VRDE setting" \
+	formdata=$(dialog --stdout --backtitle "$backtitle" --title "$VMName: VRDE setting" \
 		--form 'Enter on/off, or <Cancel> to return' 0 0 0 \
-		vrde 1 1 "$VMvrde" 1 10 10 10 `
+		vrde 1 1 "$VMvrde" 1 10 10 10 )
 	[ $? = 0 ] || break
 	set -- $formdata
 	vrde=$1

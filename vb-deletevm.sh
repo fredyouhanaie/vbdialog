@@ -7,8 +7,8 @@
 #	http://www.gnu.org/licenses/gpl-2.0.html
 #
 
-pdir=`dirname $0`
-pname=`basename $0`
+pdir=$(dirname $0)
+pname=$(basename $0)
 
 [ -n "$VBFUNCTIONS" ] || source $pdir/vbfunctions.sh
 
@@ -22,7 +22,7 @@ VBDELETE='VBoxManage unregistervm --delete'
 
 while :
 do
-	vm=`pickavm`
+	vm=$(pickavm)
 	[ $? = 0 ] || break
 	runcommand "Ready to Delete VM?" "$VBDELETE $vm"
 	[ $? = 0 ] && break

@@ -7,8 +7,8 @@
 #	http://www.gnu.org/licenses/gpl-2.0.html
 #
 
-pdir=`dirname $0`
-pname=`basename $0`
+pdir=$(dirname $0)
+pname=$(basename $0)
 
 [ -n "$VBFUNCTIONS" ] || source $pdir/vbfunctions.sh
 
@@ -27,28 +27,28 @@ VBMODIFY="VBoxManage modifyvm $VMName "
 while :
 do
 	# pick a nic between 1 and 8
-	NIClist=$( for n in {1..8}; do echo "$n `getvmpar $VMName nic$n`"; done )
-	nic=`dialog --stdout --backtitle "$backtitle" --title "$VMName: NIC selection" \
+	NIClist=$( for n in {1..8}; do echo "$n $(getvmpar $VMName nic$n)"; done )
+	nic=$(dialog --stdout --backtitle "$backtitle" --title "$VMName: NIC selection" \
 		--default-item 1 \
 		--menu 'Select a NIC, or <Cancel> to return' 0 0 0 \
-		$NIClist`
+		$NIClist)
 	[ $? = 0 ] || break
 
 	while :
 	do
 		### get the NIC params
 		nicparams=$(getnicparams $VMName $nic)
-		nicpar=`dialog --stdout --backtitle "$backtitle" --title "$VMName: NIC${nic} settings" \
-			--menu 'Select param, or <Cancel> to return' 0 0 0 $nicparams`
+		nicpar=$(dialog --stdout --backtitle "$backtitle" --title "$VMName: NIC${nic} settings" \
+			--menu 'Select param, or <Cancel> to return' 0 0 0 $nicparams)
 		[ $? = 0 ] || break
 		# get the par value
 		case "$nicpar" in
 		nic?)
-			newvalue=`modifynicmenu $VMName $nicpar "bridged generic hostonly intnet nat none null"`
+			newvalue=$(modifynicmenu $VMName $nicpar "bridged generic hostonly intnet nat none null")
 			retval=$?
 			;;
 		nictype?)
-			newvalue=`modifynicmenu $VMName $nicpar "2540EM 82543GC 82545EM Am79C970A Am79C973 virtio"`
+			newvalue=$(modifynicmenu $VMName $nicpar "2540EM 82543GC 82545EM Am79C970A Am79C973 virtio")
 			retval=$?
 			;;
 		*)	retval=1
