@@ -2,10 +2,8 @@
 - move all storage stuff to a separate menu
 	main -> storage -> hd/ctl/attach
 
-- modifyvm-vrde.sh
-	- similar to the nicX ones
-	on/off
-	set params
+- tidy up
+	- move the repeated tmpfile stuff into a single funcion
 
 - modifyvm-system.sh
 	- various params

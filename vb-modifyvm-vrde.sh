@@ -13,6 +13,20 @@ pname=$(basename $0)
 [ -n "$VBFUNCTIONS" ] || source $pdir/vbfunctions.sh
 
 #
+# vrde_list
+#	list the current VRDE settings for a VM
+#
+vrde_list() {
+	[ $# = 1 ] || return 1
+	vm="$1"
+	tmpfile=$(mktemp) &&
+	VBoxManage showvminfo "$vm" --machinereadable | grep '^vrde' >$tmpfile &&
+	dialog --stdout --backtitle "$backtitle" --title "$vm: VRDE settings" \
+		--textbox "$tmpfile" 0 0
+	rm "$tmpfile"
+}
+
+#
 #	set the background title, unless already set by caller
 #
 : ${backtitle:="Virtual Box - Modify VM"}
@@ -22,23 +36,35 @@ backtitle="$backtitle - VRDE"
 [ $# != 1 ] && clearexit 1
 VMName="$1"
 
-VBMODIFY="VBoxManage modifyvm $VMName --vrde"
-
-VMvrde=$(getvmpar $VMName vrde)
+VBMODIFY="VBoxManage modifyvm $VMName"
 
 while :
 do
-	formdata=$(dialog --stdout --backtitle "$backtitle" --title "$VMName: VRDE setting" \
-		--form 'Enter on/off, or <Cancel> to return' 0 0 0 \
-		vrde 1 1 "$VMvrde" 1 10 10 10 )
-	[ $? = 0 ] || break
-	set -- $formdata
-	vrde=$1
-	runcommand "Ready to Modify VM?" "$VBMODIFY $vrde"
-	retval=$?
-	[ "$retval" = 0 ] && break
-	# so the master said NO, back to the form with current data
-	VMvrde="$vrde"
+	choice=$(dialog --stdout --backtitle "$backtitle" --title "$VMName: VRDE settings" \
+		--default-item list \
+		--menu 'Choose option, or <Cancel> to return' 0 0 0 \
+			'disable'	'Enable VRDE' \
+			'enable'	'Enable VRDE' \
+			'list'		'List current settings' \
+			'ports'		'Select ports' \
+		)
+	[ $? = 0 ] || clearexit 1
+	case "$choice" in
+	disable)
+		runcommand 'Disabling VRDE' "$VBMODIFY --vrde off"
+		;;
+	enable)
+		runcommand 'Enabling VRDE' "$VBMODIFY --vrde on"
+		;;
+	list)
+		vrde_list "$VMName"
+		;;
+	ports)
+		ports=$( getstring 'Setting for VRDE ports' $(getvmpar "$VMName" vrdeports) ) &&
+		runcommand 'About to change the VRDE settings' "$VBMODIFY --vrdeport '$ports'"
+		;;
+	esac
 done
 
 clearexit 0
+
