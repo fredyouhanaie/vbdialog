@@ -11,3 +11,7 @@
 	- can we use the generic input functions instead of the nic
 	  specific ones?
 
+- testing
+	- investigate automated testing
+	- is Expectk any good?
+
