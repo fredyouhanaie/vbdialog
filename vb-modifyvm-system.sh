@@ -22,7 +22,7 @@ backtitle="$backtitle - VRDE"
 [ $# != 1 ] && clearexit 1
 VMName="$1"
 
-VBMODIFY="VBoxManage modifyvm '$VMName'"
+VBMODIFY="vbman modifyvm '$VMName'"
 
 while :
 do

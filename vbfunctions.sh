@@ -26,6 +26,18 @@ vbdlg() {
 export -f vbdlg
 
 #
+# vbman
+#	A wrapper for VBoxManage
+#	Allows to control which VBoxManage sub-commands are run.
+#	can be used to log every single call.
+#
+vbman() {
+	[ $# -gt 1 ] || return 1
+	VBoxManage "$@"
+}
+export -f vbman
+
+#
 # getvmpar
 #	Given a vm and parameter name, return its current value.
 #	Strip away the double-quotes at the beginning and end, if any.
@@ -34,7 +46,7 @@ getvmpar() {
 	[ $# = 2 ] || return
 	vm=$1
 	par=$2
-	VBoxManage showvminfo $vm --machinereadable |
+	vbman showvminfo $vm --machinereadable |
 		case "$par" in
 		rtcuseutc)
 			sed -ne "s/^Time offset=[0-9][0-9]*$par=\(.*\)$/\1/p"
@@ -78,7 +90,7 @@ export -f runcommand
 #	generate a list of OS type IDs and quoted descriptions
 #
 getoslist() {
-	VBoxManage list ostypes | egrep '^ID:|^Description:' | sed -e 's/^.*:  *//' |
+	vbman list ostypes | egrep '^ID:|^Description:' | sed -e 's/^.*:  *//' |
 	while read name
 	do
 		read desc
@@ -124,7 +136,7 @@ getnicparams() {
 	[ -n "$state" ] || return
 	echo "nic${nic} \"$state\""
 	[ "$state" = "none" ] && return
-	VBoxManage showvminfo $vm --machinereadable |
+	vbman showvminfo $vm --machinereadable |
 		egrep "^nic[^=]+${nic}=" | awk -F= '{print $1 " " $2}'
 }
 export -f getnicparams
@@ -172,7 +184,7 @@ export -f modifynic
 #	let the user pick a vm from the list
 #
 pickavm() {
-	VMLIST=$(VBoxManage list vms | sed 's/["{}]//g' | sort)
+	VMLIST=$(vbman list vms | sed 's/["{}]//g' | sort)
 	vbdlg 'List of current VMs' \
 		--menu 'Select a VM, or <Cancel> to return' 0 0 0 $VMLIST
 	return
@@ -235,7 +247,7 @@ pickasctl() {
 	[ $# = 1 ] || return 1
 	vm="$1"
 	title="$vm: Current Storage Controllers"
-	ctlList=$(vboxmanage showvminfo "$vm" --machinereadable |
+	ctlList=$(vbman showvminfo "$vm" --machinereadable |
 		grep '^storagecontrollername' |
 		sed -e 's/^storagecontrollername//' -e 's/ /_/' -e 's/=/ /')
 	if [ -n "$ctlList" ] 
@@ -268,7 +280,7 @@ export -f getsctlname
 #	get and return the default machine folder
 #
 getdeffolder() {
-	VBoxManage list systemproperties |
+	vbman list systemproperties |
 		sed -ne 's/Default machine folder:  *//p'
 }
 export -f getdeffolder

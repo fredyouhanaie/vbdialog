@@ -18,7 +18,7 @@ pname=$(basename $0)
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - List"
 
-VBLIST='VBoxManage list '
+VBLIST='vbman list '
 
 while :
 do

@@ -18,7 +18,7 @@ pname=$(basename $0)
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Delete VM"
 
-VBDELETE='VBoxManage unregistervm --delete'
+VBDELETE='vbman unregistervm --delete'
 
 while :
 do

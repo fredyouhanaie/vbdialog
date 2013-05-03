@@ -20,7 +20,7 @@ ctlattlist() {
 	[ $# = 2 ] || return 1
 	vm="$1"
 	ctlname="$2"
-	VBoxManage showvminfo "$vm" --machinereadable |
+	vbman showvminfo "$vm" --machinereadable |
 	sed -ne "s/\"$ctlname-\([0-9][0-9]*-[0-9][0-9]*\)\"=\(\".*\"\)/\1 \2/p"
 	return
 }
@@ -34,7 +34,7 @@ do_attach() {
 	devlist=$(ctlattlist "$vm" "$ctlname") || return 1
 	while :
 	do
-		runcmd="VBoxManage storageattach $vm --storagectl $ctlname"
+		runcmd="vbman storageattach $vm --storagectl $ctlname"
 		portdev=$(vbdlg "$vm: $ctlname: Attach" \
 			--menu "Select a device slot, or <Cancel> to return" 0 0 0 $devlist) || return 1
 		port=$(echo $portdev | cut -d- -f1)

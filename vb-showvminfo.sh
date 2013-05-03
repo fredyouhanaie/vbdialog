@@ -18,7 +18,7 @@ pname=$(basename $0)
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Show VM Information"
 
-VBSHOW='VBoxManage showvminfo '
+VBSHOW='vbman showvminfo '
 
 while :
 do

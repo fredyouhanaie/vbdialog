@@ -20,7 +20,7 @@ vrde_list() {
 	[ $# = 1 ] || return 1
 	vm="$1"
 	tmpfile=$(mktemp) &&
-	VBoxManage showvminfo "$vm" --machinereadable | grep '^vrde' >$tmpfile &&
+	vbman showvminfo "$vm" --machinereadable | grep '^vrde' >$tmpfile &&
 	vbdlg "$vm: VRDE settings" --textbox "$tmpfile" 0 0
 	rm "$tmpfile"
 }
@@ -35,7 +35,7 @@ backtitle="$backtitle - VRDE"
 [ $# != 1 ] && clearexit 1
 VMName="$1"
 
-VBMODIFY="VBoxManage modifyvm $VMName"
+VBMODIFY="vbman modifyvm $VMName"
 
 while :
 do

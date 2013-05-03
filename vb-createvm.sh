@@ -18,7 +18,7 @@ pname=$(basename $0)
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Create VM"
 
-VBCREATE='VBoxManage createvm'
+VBCREATE='vbman createvm'
 
 VMName=''
 OSType=Linux26

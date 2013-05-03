@@ -18,7 +18,7 @@ pname=$(basename $0)
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Create HD"
 
-VBCREATE='VBoxManage createhd'
+VBCREATE='vbman createhd'
 
 HDfolder=$(getdeffolder)
 

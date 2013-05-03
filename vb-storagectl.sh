@@ -48,7 +48,7 @@ add_ctl() {
 		esac
 	done
 	runcommand "Ready to add Storage Controller?" \
-		"VBoxManage storagectl '$vm' --name '$ctlName' --add $ctlType --controller $ctlChip"
+		"vbman storagectl '$vm' --name '$ctlName' --add $ctlType --controller $ctlChip"
 	return
 }
 
@@ -92,7 +92,7 @@ modify_ctl() {
 	done
 	# has anything changed?
 	change=no
-	runcmd="VBoxManage storagectl '$vm' --name '$ctlName'"
+	runcmd="vbman storagectl '$vm' --name '$ctlName'"
 	if [ "$ctlBoot0" != "$ctlBoot" ]
 	then
 		runcmd="$runcmd --bootable $ctlBoot"
@@ -119,7 +119,7 @@ modify_ctl() {
 remove_ctl() {
 	ctlName=$( getsctlname "$vm" $(pickasctl "$vm") )
 	[ $? = 0 ] || return 1
-	runcommand "Ready to remove storage Controller?" "VBoxManage storagectl '$vm' --name '$ctlName' --remove"
+	runcommand "Ready to remove storage Controller?" "vbman storagectl '$vm' --name '$ctlName' --remove"
 	return
 }
 
@@ -129,7 +129,7 @@ remove_ctl() {
 #
 list_ctl() {
 	tmpfile=$(mktemp)
-	VBoxManage showvminfo $vm | grep '^Storage Controller' >$tmpfile
+	vbman showvminfo $vm | grep '^Storage Controller' >$tmpfile
 	if [ -s "$tmpfile" ]
 	then
 		vbdlg "$vm: Storage Controller(s)" --textbox "$tmpfile" 0 0
