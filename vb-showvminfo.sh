@@ -10,6 +10,8 @@
 pdir=$(dirname $0)
 pname=$(basename $0)
 
+[ -n "$VBFUNCTIONS" ] || source $pdir/vbfunctions.sh
+
 #
 #	set the background title, unless already set by caller
 #
@@ -24,7 +26,7 @@ do
 	[ $? = 0 ] || break
 	tmpfile=$(mktemp) &&
 	$VBSHOW "$vm" >$tmpfile &&
-	dialog --backtitle "$backtitle" --title "showvminfo $vm" --textbox $tmpfile 0 0 &&
+	vbdlg "showvminfo $vm" --textbox $tmpfile 0 0 &&
 	rm $tmpfile
 done
 

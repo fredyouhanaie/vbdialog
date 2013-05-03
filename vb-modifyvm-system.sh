@@ -30,7 +30,7 @@ do
 	VMpae=$(getvmpar "$VMName" pae)
 	VMrtcuseutc=$(getvmpar "$VMName" rtcuseutc)
 
-	choice=$(dialog --stdout --backtitle "$backtitle" --title "$VMName: System settings" \
+	choice=$(vbdlg "$VMName: System settings" \
 		--menu 'Choose parameter, or <Cancel> to return' 0 0 0 \
 			'memory'	"$VMmemory" \
 			'pae'		"$VMpae" \
@@ -51,7 +51,7 @@ do
 		runcommand 'About to change rtcuseutc setting' "$VBMODIFY --rtcuseutc '$rtcuseutc'"
 		;;
 	*)
-		dialog --stdout --msgbox "Unknown choice: $choice" 0 0
+		vbdlg "$VMName: System Settings" --msgbox "Unknown choice: $choice" 0 0
 	esac
 done
 

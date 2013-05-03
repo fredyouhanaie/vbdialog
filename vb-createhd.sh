@@ -31,7 +31,7 @@ do
 	# Get the parameters
 	while :
 	do
-		param=$(dialog --stdout --backtitle "$backtitle" --title "Create HD" \
+		param=$(vbdlg 'Create HD' \
 			--extra-button --extra-label 'OK' --ok-label 'Change' \
 			--menu '<Change> parameter, or <Cancel> to return' 0 0 0 \
 			File "$HDfile" Size "$HDsize MB" Format "$HDformat")
@@ -47,7 +47,7 @@ do
 			;;
 		esac
 	done
-	runcommand "Ready to Create HD?" "$VBCREATE --filename $HDfile --size $HDsize --format $HDformat"
+	runcommand "Ready to Create HD?" "$VBCREATE --filename '$HDfile' --size $HDsize --format $HDformat"
 	[ $? = 0 ] && break
 done
 

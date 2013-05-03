@@ -27,7 +27,7 @@ export backtitle="Virtual Box"
 #
 while :
 do
-	choice=$(dialog --stdout --backtitle "$backtitle" --title "Main Menu" --default-item list \
+	choice=$(vbdlg 'Main Menu' --default-item list \
 		--menu "Select sub-menu, or <Cancel> to quit" 0 0 0 \
 		createhd	"Create a new HD" \
 		createvm	"Create a new VM" \

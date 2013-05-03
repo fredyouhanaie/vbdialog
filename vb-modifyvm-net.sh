@@ -28,7 +28,7 @@ while :
 do
 	# pick a nic between 1 and 8
 	NIClist=$( for n in {1..8}; do echo "$n $(getvmpar $VMName nic$n)"; done )
-	nic=$(dialog --stdout --backtitle "$backtitle" --title "$VMName: NIC selection" \
+	nic=$(vbdlg "$VMName: NIC selection" \
 		--default-item 1 \
 		--menu 'Select a NIC, or <Cancel> to return' 0 0 0 \
 		$NIClist)
@@ -38,7 +38,7 @@ do
 	do
 		### get the NIC params
 		nicparams=$(getnicparams $VMName $nic)
-		nicpar=$(dialog --stdout --backtitle "$backtitle" --title "$VMName: NIC${nic} settings" \
+		nicpar=$(vbdlg "$VMName: NIC${nic} settings" \
 			--menu 'Select param, or <Cancel> to return' 0 0 0 $nicparams)
 		[ $? = 0 ] || break
 		# get the par value

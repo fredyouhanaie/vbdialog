@@ -21,8 +21,7 @@ vrde_list() {
 	vm="$1"
 	tmpfile=$(mktemp) &&
 	VBoxManage showvminfo "$vm" --machinereadable | grep '^vrde' >$tmpfile &&
-	dialog --stdout --backtitle "$backtitle" --title "$vm: VRDE settings" \
-		--textbox "$tmpfile" 0 0
+	vbdlg "$vm: VRDE settings" --textbox "$tmpfile" 0 0
 	rm "$tmpfile"
 }
 
@@ -40,7 +39,7 @@ VBMODIFY="VBoxManage modifyvm $VMName"
 
 while :
 do
-	choice=$(dialog --stdout --backtitle "$backtitle" --title "$VMName: VRDE settings" \
+	choice=$(vbdlg "$VMName: VRDE settings" \
 		--default-item list \
 		--menu 'Choose option, or <Cancel> to return' 0 0 0 \
 			'disable'	'Enable VRDE' \

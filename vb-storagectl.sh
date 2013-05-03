@@ -23,7 +23,7 @@ add_ctl() {
 	ctlChip=PIIX4
 	while :
 	do
-		param=$(dialog --stdout --backtitle "$backtitle" --title "$vm: Adding Storage Controller" \
+		param=$(vbdlg "$vm: Adding Storage Controller" \
 			--extra-button --extra-label 'OK' --ok-label 'Change' \
 			--menu 'Set parameters, or <Cancel> to return' 0 0 0 \
 			Name	"$ctlName" \
@@ -67,7 +67,7 @@ modify_ctl() {
 	ctlPcount=$ctlPcount0
 	while :
 	do
-		param=$(dialog --stdout --backtitle "$backtitle" --title "$vm: Modifying $ctlName" \
+		param=$(vbdlg "$vm: Modifying $ctlName" \
 			--extra-button --extra-label 'OK' --ok-label 'Change' \
 			--menu 'Set parameters, or <Cancel> to return' 0 0 0 \
 			Boot	"$ctlBoot" \
@@ -128,14 +128,13 @@ remove_ctl() {
 #	list the current controller and their settings
 #
 list_ctl() {
-	dialogcmd="dialog --stdout --backtitle '$backtitle' --title '$vm: Storage Controller(s)'"
 	tmpfile=$(mktemp)
 	VBoxManage showvminfo $vm | grep '^Storage Controller' >$tmpfile
 	if [ -s "$tmpfile" ]
 	then
-		eval "$dialogcmd --textbox $tmpfile 0 0"
+		vbdlg "$vm: Storage Controller(s)" --textbox "$tmpfile" 0 0
 	else
-		eval "$dialogcmd --msgbox 'There are no Storage Controllers!' 0 0"
+		vbdlg "$vm: Storage Controller(s)" --msgbox 'There are no Storage Controllers!' 0 0
 	fi
         rm "$tmpfile"
 }
@@ -151,7 +150,7 @@ vm=$(pickavm)
 
 while :
 do
-	cmd=$(dialog --stdout --backtitle "$backtitle" --title "$vm: Storage Controller" \
+	cmd=$(vbdlg "$vm: Storage Controller" \
 		--default-item list \
 		--menu 'Select option, or <Cancel> to return' 0 0 0 \
 		add	'Add a Controller' \

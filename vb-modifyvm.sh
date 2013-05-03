@@ -23,7 +23,7 @@ vm=$(pickavm)
 
 while :
 do
-	param=$(dialog --stdout --backtitle "$backtitle" --title "VM parameter for $vm" \
+	param=$(vbdlg "VM parameter for $vm" \
 		--menu 'Select Parameter, or <Cancel> to return' 0 0 0 \
 		net	'Network settings' \
 		system	'System settings' \

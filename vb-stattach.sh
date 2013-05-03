@@ -35,7 +35,7 @@ do_attach() {
 	while :
 	do
 		runcmd="VBoxManage storageattach $vm --storagectl $ctlname"
-		portdev=$(dialog --stdout --backtitle "$backtitle" --title "$vm: $ctlname: Attach" \
+		portdev=$(vbdlg "$vm: $ctlname: Attach" \
 			--menu "Select a device slot, or <Cancel> to return" 0 0 0 $devlist) || return 1
 		port=$(echo $portdev | cut -d- -f1)
 		dev=$(echo $portdev | cut -d- -f2)
@@ -65,9 +65,7 @@ do_list() {
 	ctlname=$(getsctlname "$vm" $(pickasctl "$vm")) || return 1
 	tmpfile=$(mktemp) &&
 	ctlattlist "$vm" "$ctlname" >$tmpfile &&
-	dialog --stdout --backtitle "$backtitle" \
-		--title "$vm: $ctlname: Current Attached devices" \
-		--textbox $tmpfile 0 0
+	vbdlg "$vm: $ctlname: Current Attached devices" --textbox $tmpfile 0 0
 	rm "$tmpfile"
 }
 
@@ -82,7 +80,7 @@ vm=$(pickavm)
 
 while :
 do
-	param=$(dialog --stdout --backtitle "$backtitle" --title "$vm: Storage Attachment" \
+	param=$(vbdlg "$vm: Storage Attachment" \
 		--default-item list \
 		--menu 'Select option, or <Cancel> to return' 0 0 0 \
 		attach	'Attach/remove a device'  \

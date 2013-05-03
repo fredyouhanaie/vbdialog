@@ -27,7 +27,7 @@ while :
 do
 	OSType=$(getostype $OSType)
 	[ $? = 0 ] || break
-	formdata=$(dialog --stdout --backtitle "$backtitle" --title "Create VM" \
+	formdata=$(vbdlg 'Create VM' \
 		--form 'Note: I do not like whitespace in names!' 0 0 0 \
 		name 1 1 "$VMName" 1 10 10 10 \
 		ostype 2 1 "$OSType" 2 10 10 10 )
@@ -35,7 +35,7 @@ do
 	set -- $formdata
 	vmname=$1
 	ostype=$2
-	runcommand "Ready to Create VM?" "$VBCREATE --name $vmname --ostype $ostype --register"
+	runcommand "Ready to Create VM?" "$VBCREATE --name '$vmname' --ostype $ostype --register"
 	[ $? = 0 ] && break
 	# so the master said NO, back to the form with current data
 	VMName="$vmname"

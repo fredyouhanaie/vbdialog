@@ -10,6 +10,22 @@
 export VBFUNCTIONS=1
 
 #
+# vbdlg
+#	A wrapper for the standard dialog command.
+#	This allows standard appearance for all the widgets, as well as
+#	allowing for a central point for logging and debugging.
+#	$1		is expected to be the widget title.
+#	$backtitle	this will be set/overriden with the scripts.
+#
+vbdlg() {
+	[ $# -gt 2 ] || return 1
+	title="$1"
+	shift
+	dialog --stdout --backtitle "$backtitle" --title "$title" "$@"
+}
+export -f vbdlg
+
+#
 # getvmpar
 #	Given a vm and parameter name, return its current value.
 #	Strip away the double-quotes at the beginning and end, if any.
@@ -38,8 +54,7 @@ runcommand() {
 	[ $# = 2 ] || return 1
 	title=$1
 	command=$2
-	dialog --backtitle "$backtitle" --title "$title" --aspect 20 \
-		--yesno "About to run\n\n$command\n\nOK to proceed?" 0 0
+	vbdlg "$title" --aspect 20 --yesno "About to run\n\n$command\n\nOK to proceed?" 0 0
 	retvalue=$?
 	if [ "$retvalue" = 0 ]
 	then
@@ -67,8 +82,8 @@ getoslist() {
 	while read name
 	do
 		read desc
-		echo "$name \"$desc\""
-	done | sort
+		echo "$name '$desc' "
+	done | sort | tr '\n' ' '
 }
 export -f getoslist
 
@@ -79,9 +94,9 @@ export -f getoslist
 getostype() {
 	defaultos=$1
 	: ${defaultos:=Linux26}
-	eval "dialog --stdout --default-item "$defaultos" \
-		--menu 'Select OS type, or <Cancel> to return' 0 0 0" \
-		$(getoslist)
+	eval "vbdlg 'Current OS Types' --default-item '$defaultos' \
+		--menu 'Select OS type, or <Cancel> to return' 0 0 0 \
+		$(getoslist)"
 	return $?
 }
 export -f getostype
@@ -130,7 +145,7 @@ modifynicmenu() {
 	menulist=$( for v in $valuelist; do echo "$v $v"; done)
 	value=$(getvmpar $vm $nicpar)
 	[ $? = 0 ] || return 1
-	dialog --stdout --backtitle "$backtitle" --title "$vm: $nicpar" \
+	vbdlg "$vm: $nicpar" \
 		--default-item $value --menu 'Select new value, or <Cancel> to return' 0 0 0 \
 		$menulist
 	return
@@ -145,7 +160,7 @@ modifynic() {
 	nicpar="$2"
 	value=$(getvmpar $vm $nicpar)
 	[ $? = 0 ] || return 1
-	dialog --stdout --backtitle "$backtitle" --title "$vm $nicpar" \
+	vbdlg "$vm $nicpar" \
 		--form 'Enter a new value, or <Cancel> to return' 0 0 0 \
 		"$nicpar" 1 1 "$value" 1 10 10 10
 	return
@@ -158,7 +173,7 @@ export -f modifynic
 #
 pickavm() {
 	VMLIST=$(VBoxManage list vms | sed 's/["{}]//g' | sort)
-	dialog --stdout --backtitle "$backtitle" --title "List of current VMs" \
+	vbdlg 'List of current VMs' \
 		--menu 'Select a VM, or <Cancel> to return' 0 0 0 $VMLIST
 	return
 }
@@ -172,7 +187,7 @@ export -f pickavm
 #
 getfilename() {
 	[ $# = 2 ] || return 1
-	dialog --stdout --backtitle "$backtitle" --title "$1" --fselect "$2" 0 0
+	vbdlg "$1" --fselect "$2" 0 0
 	return
 }
 export -f getfilename
@@ -185,7 +200,7 @@ export -f getfilename
 #
 getstring() {
 	[ $# = 2 ] || return 1
-	dialog --stdout --backtitle "$backtitle" --title "$1" \
+	vbdlg "$1" \
 		--inputbox 'Enter value, or <Cancel> to return' 0 0 "$2"
 	return
 }
@@ -203,8 +218,8 @@ getselection() {
 	title="$1"
 	vlist="$2"
 	default="$3"
-	menulist=$( for v in $vlist; do echo "$v $v"; done)
-	dialog --stdout --backtitle "$backtitle" --title "$title" \
+	menulist=$( for v in $vlist; do echo -n "$v $v "; done)
+	vbdlg "$title" \
 		--default-item "$default" --menu 'Select new value, or <Cancel> to return' 0 0 0 \
 		$menulist
 	return
@@ -219,16 +234,17 @@ export -f getselection
 pickasctl() {
 	[ $# = 1 ] || return 1
 	vm="$1"
+	title="$vm: Current Storage Controllers"
 	ctlList=$(vboxmanage showvminfo "$vm" --machinereadable |
 		grep '^storagecontrollername' |
 		sed -e 's/^storagecontrollername//' -e 's/ /_/' -e 's/=/ /')
 	if [ -n "$ctlList" ] 
 	then
-		dialog --stdout --backtitle "$backtitle" --title "$vm: Current Storage Controllers" \
+		vbdlg "$title" \
 			--menu 'Select a Storage Controller, or <Cancel> to return' 0 0 0 $ctlList
 		return
 	else
-		dialog --stdout --backtitle "$backtitle" --msgbox "There are no Storage Controllers!" 5 44
+		vbdlg "$title" --msgbox 'There are no Storage Controllers!' 5 44
 		return 1
 	fi
 }
