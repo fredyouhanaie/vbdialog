@@ -29,8 +29,8 @@ do
 	[ $? = 0 ] || break
 	formdata=$(vbdlg 'Create VM' \
 		--form 'Note: I do not like whitespace in names!' 0 0 0 \
-		name 1 1 "$VMName" 1 10 10 10 \
-		ostype 2 1 "$OSType" 2 10 10 10 )
+		name 1 1 "$VMName" 1 10 40 40 \
+		ostype 2 1 "$OSType" 2 10 40 40 )
 	[ $? = 0 ] || break
 	set -- $formdata
 	vmname=$1
