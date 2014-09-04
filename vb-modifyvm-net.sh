@@ -30,6 +30,7 @@ do
 	NIClist=$( for n in {1..8}; do echo "$n $(getvmpar $VMName nic$n)"; done )
 	nic=$(vbdlg "$VMName: NIC selection" \
 		--default-item 1 \
+		--cancel-label 'Return' \
 		--menu 'Select a NIC, or <Cancel> to return' 0 0 0 \
 		$NIClist)
 	[ $? = 0 ] || break

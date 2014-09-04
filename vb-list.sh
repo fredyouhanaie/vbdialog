@@ -23,6 +23,7 @@ VBLIST='vbman list '
 while :
 do
 	choice=$(vbdlg 'List Options' --default-item vms \
+		--cancel-label 'Return' \
 		--menu "Select option, or <Cancel> to return" 0 0 0 \
 			bridgedifs "" \
 			dhcpservers "" \

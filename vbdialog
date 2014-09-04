@@ -28,6 +28,7 @@ export backtitle="Virtual Box"
 while :
 do
 	choice=$(vbdlg 'Main Menu' --default-item list \
+		--cancel-label 'Quit' \
 		--menu "Select sub-menu, or <Cancel> to quit" 0 0 0 \
 		createhd	"Create a new HD" \
 		createvm	"Create a new VM" \

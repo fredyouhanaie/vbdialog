@@ -36,6 +36,7 @@ do_attach() {
 	do
 		runcmd="vbman storageattach $vm --storagectl $ctlname"
 		portdev=$(vbdlg "$vm: $ctlname: Attach" \
+			--cancel-label 'Return' \
 			--menu "Select a device slot, or <Cancel> to return" 0 0 0 $devlist) || return 1
 		port=$(echo $portdev | cut -d- -f1)
 		dev=$(echo $portdev | cut -d- -f2)

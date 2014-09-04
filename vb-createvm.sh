@@ -28,6 +28,7 @@ do
 	OSType=$(getostype $OSType)
 	[ $? = 0 ] || break
 	formdata=$(vbdlg 'Create VM' \
+		--cancel-label 'Return' \
 		--form 'Note: I do not like whitespace in names!' 0 0 0 \
 		name 1 1 "$VMName" 1 10 40 40 \
 		ostype 2 1 "$OSType" 2 10 40 40 )

@@ -25,6 +25,7 @@ add_ctl() {
 	do
 		param=$(vbdlg "$vm: Adding Storage Controller" \
 			--extra-button --extra-label 'OK' --ok-label 'Change' \
+			--cancel-label 'Return' \
 			--menu 'Set parameters, or <Cancel> to return' 0 0 0 \
 			Name	"$ctlName" \
 			Type	"$ctlType" \

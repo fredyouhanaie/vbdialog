@@ -24,6 +24,7 @@ vm=$(pickavm)
 while :
 do
 	param=$(vbdlg "VM parameter for $vm" \
+		--cancel-label 'Return' \
 		--menu 'Select Parameter, or <Cancel> to return' 0 0 0 \
 		net	'Network settings' \
 		system	'System settings' \

@@ -31,6 +31,7 @@ do
 	VMrtcuseutc=$(getvmpar "$VMName" rtcuseutc)
 
 	choice=$(vbdlg "$VMName: System settings" \
+		--cancel-label 'Return' \
 		--menu 'Choose parameter, or <Cancel> to return' 0 0 0 \
 			'memory'	"$VMmemory" \
 			'pae'		"$VMpae" \
