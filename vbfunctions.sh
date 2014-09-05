@@ -7,6 +7,8 @@
 #	http://www.gnu.org/licenses/gpl-2.0.html
 #
 
+pdir=$(dirname $0)
+
 export VBFUNCTIONS=1
 
 #
@@ -33,7 +35,13 @@ export -f vbdlg
 #
 vbman() {
 	[ $# -gt 1 ] || return 1
-	VBoxManage "$@"
+	if [ -n "$VBTEST" ]
+	then
+		[ -n "$VBOXMANAGE" ] || source $pdir/vboxmanage.sh
+		vb_manage "$@"
+	else
+		VBoxManage "$@"
+	fi
 }
 export -f vbman
 
