@@ -59,7 +59,7 @@ vbman_list() {
 		vbman_list_$obj
 		;;
 	*)
-		vbman_list_default
+		vbman_list_default $obj
 		;;
 	esac
 }
@@ -72,6 +72,9 @@ export vbman_list
 #
 vbman_list_default() {
 	cat <<%
+
+VBoxManage list $1
+
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
 veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
