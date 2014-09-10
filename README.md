@@ -24,7 +24,7 @@ scripts in a suitable directory and then running `vbdialog`. For example
 
 	cd vbdialog
 	mkdir -pv /usr/local/lib/vbdialog
-	cp -vip vbdialog vbdialogrc vb-*.sh /usr/local/lib/dbdialog
+	cp -vip vbdialog vbdialogrc vb-*.sh /usr/local/lib/vbdialog
 	alias vbd=/usr/local/lib/vbdialog/vbdialog
 
 Then use `vbd` to get the main menu.
