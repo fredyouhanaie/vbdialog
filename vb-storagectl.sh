@@ -118,7 +118,7 @@ modify_ctl() {
 	fi
 	if [ "$ctlPcount0" != "$ctlPcount" ]
 	then
-		runcmd="$runcmd --sataportcount $ctlPcount"
+		runcmd="$runcmd --portcount $ctlPcount"
 		change=yes
 	fi
 	[ "$change" = yes ] && runcommand 'Modifying Storage Controller' "$runcmd"
