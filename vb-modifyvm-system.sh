@@ -22,7 +22,7 @@ backtitle="$backtitle - VRDE"
 [ $# != 1 ] && clearexit 1
 VMName="$1"
 
-VBMODIFY="vbman modifyvm '$VMName'"
+VBMODIFY="vb_modifyvm '$VMName'"
 
 while :
 do
@@ -41,15 +41,15 @@ do
 	case "$choice" in
 	memory)
 		memory=$(getstring "$VMName setting for memory" "$VMmemory") &&
-		runcommand 'About to change memory setting' "$VBMODIFY --memory '$memory'"
+		runcommand 'About to change memory setting' "$VBMODIFY memory '$memory'"
 		;;
 	pae)
 		pae=$(getselection "$VMName setting for pae" 'off on' "$VMpae") &&
-		runcommand 'About to change the pae setting' "$VBMODIFY --pae '$pae'"
+		runcommand 'About to change the pae setting' "$VBMODIFY pae '$pae'"
 		;;
 	rtcuseutc)
 		rtcuseutc=$(getselection "$VMName setting for rtcuseutc" 'off on' "$VMrtcuseutc") &&
-		runcommand 'About to change rtcuseutc setting' "$VBMODIFY --rtcuseutc '$rtcuseutc'"
+		runcommand 'About to change rtcuseutc setting' "$VBMODIFY rtcuseutc '$rtcuseutc'"
 		;;
 	*)
 		vbdlg "$VMName: System Settings" --msgbox "Unknown choice: $choice" 0 0

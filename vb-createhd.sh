@@ -18,8 +18,6 @@ pname=$(basename $0)
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Create HD"
 
-VBCREATE='vbman createhd'
-
 HDfolder=$(getdeffolder)
 
 HDfile=''
@@ -48,7 +46,7 @@ do
 			;;
 		esac
 	done
-	runcommand "Ready to Create HD?" "$VBCREATE --filename '$HDfile' --size $HDsize --format $HDformat"
+	runcommand "Ready to Create HD?" "vb_createhd '$HDfile' $HDsize $HDformat"
 	[ $? = 0 ] && break
 done
 

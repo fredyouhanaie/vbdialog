@@ -18,8 +18,6 @@ pname=$(basename $0)
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Create VM"
 
-VBCREATE='vbman createvm'
-
 VMName=''
 OSType=Linux26
 
@@ -36,7 +34,7 @@ do
 	set -- $formdata
 	vmname=$1
 	ostype=$2
-	runcommand "Ready to Create VM?" "$VBCREATE --name '$vmname' --ostype $ostype --register"
+	runcommand "Ready to Create VM?" "vb_createvm '$vmname' $ostype"
 	[ $? = 0 ] && break
 	# so the master said NO, back to the form with current data
 	VMName="$vmname"

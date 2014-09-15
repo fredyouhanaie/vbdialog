@@ -18,8 +18,6 @@ pname=$(basename $0)
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - List"
 
-VBLIST='vbman list '
-
 while :
 do
 	choice=$(vbdlg 'List Options' --default-item vms \
@@ -49,7 +47,7 @@ do
 			webcams "" )
 	[ $? = 0 ] || break
 	tmpfile=$(mktemp) &&
-	$VBLIST $choice >$tmpfile &&
+	vb_list $choice >$tmpfile &&
 	vbdlg "list $choice" --textbox $tmpfile 0 0
 	[ -f "$tmpfile" ] && rm $tmpfile
 done

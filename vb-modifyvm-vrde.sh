@@ -20,7 +20,7 @@ vrde_list() {
 	[ $# = 1 ] || return 1
 	vm="$1"
 	tmpfile=$(mktemp) &&
-	vbman showvminfo "$vm" --machinereadable | grep '^vrde' >$tmpfile &&
+	vb_showvminfo -m "$vm" | grep '^vrde' >$tmpfile &&
 	vbdlg "$vm: VRDE settings" --textbox "$tmpfile" 0 0
 	[ -f "$tmpfile" ] && rm "$tmpfile"
 }
@@ -35,7 +35,7 @@ backtitle="$backtitle - VRDE"
 [ $# != 1 ] && clearexit 1
 VMName="$1"
 
-VBMODIFY="vbman modifyvm $VMName"
+VBMODIFY="vb_modifyvm '$VMName'"
 
 while :
 do
@@ -50,17 +50,17 @@ do
 	[ $? = 0 ] || clearexit 1
 	case "$choice" in
 	disable)
-		runcommand 'Disabling VRDE' "$VBMODIFY --vrde off"
+		runcommand 'Disabling VRDE' "$VBMODIFY vrde off"
 		;;
 	enable)
-		runcommand 'Enabling VRDE' "$VBMODIFY --vrde on"
+		runcommand 'Enabling VRDE' "$VBMODIFY vrde on"
 		;;
 	list)
 		vrde_list "$VMName"
 		;;
 	ports)
 		ports=$( getstring 'Setting for VRDE ports' $(getvmpar "$VMName" vrdeports) ) &&
-		runcommand 'About to change the VRDE settings' "$VBMODIFY --vrdeport '$ports'"
+		runcommand 'About to change the VRDE settings' "$VBMODIFY vrdeport '$ports'"
 		;;
 	esac
 done

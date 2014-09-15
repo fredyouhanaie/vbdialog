@@ -22,8 +22,6 @@ backtitle="$backtitle - Network"
 [ $# != 1 ] && clearexit 1
 VMName="$1"
 
-VBMODIFY="vbman modifyvm $VMName "
-
 while :
 do
 	# pick a nic between 1 and 8
@@ -55,7 +53,7 @@ do
 		*)	retval=1
 		esac
 		[ "$retval" = 0 ] || break
-		runcommand "Ready to Modify VM?" "$VBMODIFY --$nicpar $newvalue"
+		runcommand "Ready to Modify VM?" "vb_modifyvm '$VMName' '$nicpar' '$newvalue'"
 		[ $? = 0 ] && break
 		# the command did not run, let's start again
 	done

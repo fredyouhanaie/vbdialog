@@ -18,14 +18,12 @@ pname=$(basename $0)
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Show VM Information"
 
-VBSHOW='vbman showvminfo '
-
 while :
 do
 	vm=$(pickavm)
 	[ $? = 0 ] || break
 	tmpfile=$(mktemp) &&
-	$VBSHOW "$vm" >$tmpfile &&
+	vb_showvminfo "$vm" >$tmpfile &&
 	vbdlg "showvminfo $vm" --textbox $tmpfile 0 0
 	[ -f "$tmpfile" ] && rm $tmpfile
 done
