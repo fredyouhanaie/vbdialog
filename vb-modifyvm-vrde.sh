@@ -22,7 +22,7 @@ vrde_list() {
 	tmpfile=$(mktemp) &&
 	vbman showvminfo "$vm" --machinereadable | grep '^vrde' >$tmpfile &&
 	vbdlg "$vm: VRDE settings" --textbox "$tmpfile" 0 0
-	rm "$tmpfile"
+	[ -f "$tmpfile" ] && rm "$tmpfile"
 }
 
 #

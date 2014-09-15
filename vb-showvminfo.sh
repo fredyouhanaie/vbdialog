@@ -26,8 +26,8 @@ do
 	[ $? = 0 ] || break
 	tmpfile=$(mktemp) &&
 	$VBSHOW "$vm" >$tmpfile &&
-	vbdlg "showvminfo $vm" --textbox $tmpfile 0 0 &&
-	rm $tmpfile
+	vbdlg "showvminfo $vm" --textbox $tmpfile 0 0
+	[ -f "$tmpfile" ] && rm $tmpfile
 done
 
 clearexit 0

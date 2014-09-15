@@ -137,7 +137,7 @@ list_ctl() {
 	else
 		vbdlg "$vm: Storage Controller(s)" --msgbox 'There are no Storage Controllers!' 0 0
 	fi
-        rm "$tmpfile"
+        [ -f "$tmpfile" ] && rm "$tmpfile"
 }
 
 #

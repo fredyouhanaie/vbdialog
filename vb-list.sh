@@ -47,8 +47,8 @@ do
 	[ $? = 0 ] || break
 	tmpfile=$(mktemp) &&
 	$VBLIST $choice >$tmpfile &&
-	vbdlg "list $choice" --textbox $tmpfile 0 0 &&
-	rm $tmpfile
+	vbdlg "list $choice" --textbox $tmpfile 0 0
+	[ -f "$tmpfile" ] && rm $tmpfile
 done
 
 clearexit 0

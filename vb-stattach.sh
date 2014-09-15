@@ -67,7 +67,7 @@ do_list() {
 	tmpfile=$(mktemp) &&
 	ctlattlist "$vm" "$ctlname" >$tmpfile &&
 	vbdlg "$vm: $ctlname: Current Attached devices" --textbox $tmpfile 0 0
-	rm "$tmpfile"
+	[ -f "$tmpfile" ] && rm "$tmpfile"
 }
 
 #
