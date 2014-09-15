@@ -38,12 +38,15 @@ do
 			hostfloppies "" \
 			hostinfo "" \
 			hostonlyifs "" \
+			intnets "" \
+			natnets "" \
 			ostypes "" \
 			runningvms "" \
 			systemproperties "" \
 			usbfilters "" \
 			usbhost "" \
-			vms "" )
+			vms "" \
+			webcams "" )
 	[ $? = 0 ] || break
 	tmpfile=$(mktemp) &&
 	$VBLIST $choice >$tmpfile &&

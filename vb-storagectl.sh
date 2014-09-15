@@ -40,11 +40,23 @@ add_ctl() {
 		Type)
 			ctlType=$(getselection 'Controller Bus type' \
 				'floppy ide sas sata scsi' "$ctlType")
+			case $ctlType in
+				floppy)	ctlChip='I82078';;
+				ide)	ctlChip='PIIX4';;
+				sas)	ctlChip='LSILogicSAS';;
+				sata)	ctlChip='IntelAHCI';;
+				scsi)	ctlChip='LSILogic';;
+			esac
 			;;
 		Chip)
-			ctlChip=$(getselection 'Controller Chipset type' \
-				'BusLogic I82078 ICH6 IntelAHCI LSILogic LSILogicSAS PIIX3 PIIX4' \
-				"$ctlType")
+			case $ctlType in
+				floppy)	ctlChipList='I82078';;
+				ide)	ctlChipList='ICH6 PIIX3 PIIX4';;
+				sas)	ctlChipList='LSILogicSAS';;
+				sata)	ctlChipList='IntelAHCI';;
+				scsi)	ctlChipList='BusLogic LSILogic';;
+			esac
+			ctlChip=$(getselection 'Controller Chipset type' "$ctlChipList" "$ctlChip")
 			;;
 		esac
 	done
