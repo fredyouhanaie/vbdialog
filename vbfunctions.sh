@@ -38,15 +38,7 @@ getvmpar() {
 	[ $# = 2 ] || return 1
 	vm="$1"
 	par="$2"
-	vb_showvminfo -m "$vm" |
-		case "$par" in
-		rtcuseutc)
-			sed -ne "s/^Time offset=[0-9][0-9]*$par=\(.*\)$/\1/p"
-			;;
-		*)
-			sed -ne "s/$par=\(.*\)$/\1/p"
-			;;
-		esac | sed -e 's/^"//' -e 's/"$//'
+	vb_showvminfo -m "$vm" | sed -ne "s/$par=\(.*\)$/\1/p" | sed -e 's/^"//' -e 's/"$//'
 }
 export -f getvmpar
 
