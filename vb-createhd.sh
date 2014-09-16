@@ -46,7 +46,8 @@ do
 			;;
 		esac
 	done
-	runcommand "Ready to Create HD?" "vb_createhd '$HDfile' $HDsize $HDformat"
+	runcommand "About to create HD: '$HDfile', ${HDsize}MB, $HDformat" \
+		"vb_createhd '$HDfile' '$HDsize' '$HDformat'"
 	[ $? = 0 ] && break
 done
 

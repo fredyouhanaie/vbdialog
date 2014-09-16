@@ -58,22 +58,17 @@ runcommand() {
 	[ $# = 2 ] || return 1
 	title=$1
 	command=$2
-	vbdlg "$title" --aspect 20 --yesno "About to run\n\n$command\n\nOK to proceed?" 0 0
-	retvalue=$?
-	if [ "$retvalue" = 0 ]
-	then
-		clear
-		echo "$command" >&2
-		echo >&2
-		eval "$command"
-		res=$?
-		echo >&2
-		read -p "[result=$res]	PRESS ENTER TO CONTINUE"
-		echo >&2
-		return 0
-	else
-		return 1
-	fi
+	vbdlg "Confirm changes to VirtualBox" --aspect 20 --yesno "$title\n\nOK to proceed?" 0 0
+	[ "$?" = 0 ] || return 1
+	clear
+	echo "$command" >&2
+	echo >&2
+	eval "$command"
+	res=$?
+	echo >&2
+	read -p "[result=$res]	PRESS ENTER TO CONTINUE"
+	echo >&2
+	return 0
 }
 export -f runcommand
 

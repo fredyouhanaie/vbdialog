@@ -50,17 +50,17 @@ do
 	[ $? = 0 ] || clearexit 1
 	case "$choice" in
 	disable)
-		runcommand 'Disabling VRDE' "$VBMODIFY vrde off"
+		runcommand "Disabling VRDE for '$VMName'" "$VBMODIFY vrde off"
 		;;
 	enable)
-		runcommand 'Enabling VRDE' "$VBMODIFY vrde on"
+		runcommand "Enabling VRDE for '$VMName'" "$VBMODIFY vrde on"
 		;;
 	list)
 		vrde_list "$VMName"
 		;;
 	ports)
 		ports=$( getstring 'Setting for VRDE ports' $(getvmpar "$VMName" vrdeports) ) &&
-		runcommand 'About to change the VRDE settings' "$VBMODIFY vrdeport '$ports'"
+		runcommand "About to set the VRDE ports for '$VMName' to '$ports'" "$VBMODIFY vrdeport '$ports'"
 		;;
 	esac
 done

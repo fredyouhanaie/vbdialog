@@ -41,15 +41,15 @@ do
 	case "$choice" in
 	memory)
 		memory=$(getstring "$VMName setting for memory" "$VMmemory") &&
-		runcommand 'About to change memory setting' "$VBMODIFY memory '$memory'"
+		runcommand "About to set memory for '$VMName' to $memory MB" "$VBMODIFY memory '$memory'"
 		;;
 	pae)
 		pae=$(getselection "$VMName setting for pae" 'off on' "$VMpae") &&
-		runcommand 'About to change the pae setting' "$VBMODIFY pae '$pae'"
+		runcommand "About to set pae for '$VMName' to $pae" "$VBMODIFY pae '$pae'"
 		;;
 	rtcuseutc)
 		rtcuseutc=$(getselection "$VMName setting for rtcuseutc" 'off on' "$VMrtcuseutc") &&
-		runcommand 'About to change rtcuseutc setting' "$VBMODIFY rtcuseutc '$rtcuseutc'"
+		runcommand "About to set rtcuseutc for '$VMName' to $rtcuseutc" "$VBMODIFY rtcuseutc '$rtcuseutc'"
 		;;
 	*)
 		vbdlg "$VMName: System Settings" --msgbox "Unknown choice: $choice" 0 0

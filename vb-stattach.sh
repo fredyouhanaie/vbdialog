@@ -49,8 +49,8 @@ do_attach() {
 		else
 			medium="$med"
 		fi
-		cmd="vb_stattach '$vm' '$ctlname' '$port' '$dev' '$dtype' '$medium'"
-		runcommand "Storage Attach" "$cmd" && break
+		runcommand "About to attach '$medium' to '$ctlname-$port-$dev' ($dtype) on '$vm'" \
+			"vb_stattach '$vm' '$ctlname' '$port' '$dev' '$dtype' '$medium'" && break
 	done
 	return
 }

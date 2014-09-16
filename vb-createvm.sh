@@ -34,7 +34,8 @@ do
 	set -- $formdata
 	vmname=$1
 	ostype=$2
-	runcommand "Ready to Create VM?" "vb_createvm '$vmname' $ostype"
+	runcommand "About to Create VM '$vmname' ($ostype)" \
+		"vb_createvm '$vmname' $ostype"
 	[ $? = 0 ] && break
 	# so the master said NO, back to the form with current data
 	VMName="$vmname"

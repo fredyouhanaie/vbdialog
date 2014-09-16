@@ -22,7 +22,7 @@ while :
 do
 	vm=$(pickavm)
 	[ $? = 0 ] || break
-	runcommand "Ready to Delete VM?" "vb_deletevm '$vm'"
+	runcommand "About to delete VM '$vm'!" "vb_deletevm '$vm'"
 	[ $? = 0 ] && break
 done
 

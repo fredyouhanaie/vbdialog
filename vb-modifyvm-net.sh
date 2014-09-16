@@ -53,7 +53,8 @@ do
 		*)	retval=1
 		esac
 		[ "$retval" = 0 ] || break
-		runcommand "Ready to Modify VM?" "vb_modifyvm '$VMName' '$nicpar' '$newvalue'"
+		runcommand "About to modify NIC parameter on '$VMName' ($nicpar/$newvalue)" \
+			"vb_modifyvm '$VMName' '$nicpar' '$newvalue'"
 		[ $? = 0 ] && break
 		# the command did not run, let's start again
 	done

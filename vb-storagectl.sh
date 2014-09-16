@@ -60,7 +60,8 @@ add_ctl() {
 			;;
 		esac
 	done
-	runcommand "Ready to add Storage Controller?" "vb_addstctl '$vm' '$ctlName' '$ctlType' '$ctlChip'"
+	runcommand "About to add storage controller '$ctlName', '$ctlType', '$ctlChip' to '$vm'" \
+		"vb_addstctl '$vm' '$ctlName' '$ctlType' '$ctlChip'"
 	return
 }
 
@@ -99,7 +100,8 @@ modify_ctl() {
 			;;
 		esac
 	done
-	runcommand 'Modifying Storage Controller' "vb_modstctl '$vm' '$ctlName' '$ctlBoot' '$ctlChip' '$ctlPcount'"
+	runcommand "Modifying Storage Controller '$ctlName' on '$vm', Boot=$ctlBoot, Chip=$ctlChip, Ports=$ctlPcount" \
+		"vb_modstctl '$vm' '$ctlName' '$ctlBoot' '$ctlChip' '$ctlPcount'"
 	return
 }
 
@@ -110,7 +112,7 @@ modify_ctl() {
 remove_ctl() {
 	ctlName=$( getsctlname "$vm" $(pickasctl "$vm") )
 	[ $? = 0 ] || return 1
-	runcommand "Ready to remove storage Controller?" "vb_delstctl '$vm' '$ctlName'"
+	runcommand "About to remove storage Controller '$ctlName' on '$vm'" "vb_delstctl '$vm' '$ctlName'"
 	return
 }
 

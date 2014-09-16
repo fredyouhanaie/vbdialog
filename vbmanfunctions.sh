@@ -53,7 +53,7 @@ export -f vb_createhd
 #
 vb_createvm() {
 	[ $# = 2 ] || return 1
-	vbman createvm --filename "$1" --size "$2" --format "$3"
+	vbman createvm --name "$1" --ostype "$2" --register
 }
 export -f vb_createvm
 
@@ -96,8 +96,8 @@ export -f vb_modifyvm
 vb_showvminfo() {
 	[ $# = 1 -o $# = 2 ] || return 1
 	[ $# = 2 -a "$1" != '-m' ] && return 1
-	cmd="vbman showvminfo '$vmname'"
-	[ $# = 2 ] && cmd="$cmd --machinereadable"
+	cmd="vbman showvminfo '$1'"
+	[ $# = 2 ] && cmd="vbman showvminfo '$2' --machinereadable"
 	eval "$cmd"
 }
 export -f vb_showvminfo
@@ -120,7 +120,7 @@ export -f vb_stattach
 #
 vb_addstctl() {
 	[ $# = 4 ] || return 1
-	vbman "$1" --name "$2" --add "$3" --controller "$4"
+	vbman storagectl "$1" --name "$2" --add "$3" --controller "$4"
 }
 export -f vb_addstctl
 
