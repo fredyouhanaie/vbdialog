@@ -60,8 +60,8 @@ add_ctl() {
 			;;
 		esac
 	done
-	runcommand "Ready to add Storage Controller?" \
-		"vbman storagectl '$vm' --name '$ctlName' --add $ctlType --controller $ctlChip"
+	runcommand "About to add storage controller '$ctlName', '$ctlType', '$ctlChip' to '$vm'" \
+		"vb_addstctl '$vm' '$ctlName' '$ctlType' '$ctlChip'"
 	return
 }
 
@@ -72,12 +72,9 @@ add_ctl() {
 modify_ctl() {
 	ctl=$(pickasctl "$vm") || return 1
 	ctlName=$(getsctlname "$vm" "$ctl") || return 1
-	ctlBoot0=$(getvmpar $vm storagecontrollerbootable${ctl}) || return 1
-	ctlBoot=$ctlBoot0
-	ctlChip0=$(getvmpar $vm storagecontrollertype${ctl}) || return 1
-	ctlChip=$ctlChip0
-	ctlPcount0=$(getvmpar $vm storagecontrollerportcount${ctl}) || return 1
-	ctlPcount=$ctlPcount0
+	ctlBoot=$(getvmpar $vm storagecontrollerbootable${ctl}) || return 1
+	ctlChip=$(getvmpar $vm storagecontrollertype${ctl}) || return 1
+	ctlPcount=$(getvmpar $vm storagecontrollerportcount${ctl}) || return 1
 	while :
 	do
 		param=$(vbdlg "$vm: Modifying $ctlName" \
@@ -103,25 +100,8 @@ modify_ctl() {
 			;;
 		esac
 	done
-	# has anything changed?
-	change=no
-	runcmd="vbman storagectl '$vm' --name '$ctlName'"
-	if [ "$ctlBoot0" != "$ctlBoot" ]
-	then
-		runcmd="$runcmd --bootable $ctlBoot"
-		change=yes
-	fi
-	if [ "$ctlChip0" != "$ctlChip" ]
-	then
-		runcmd="$runcmd --controller $ctlChip"
-		change=yes
-	fi
-	if [ "$ctlPcount0" != "$ctlPcount" ]
-	then
-		runcmd="$runcmd --portcount $ctlPcount"
-		change=yes
-	fi
-	[ "$change" = yes ] && runcommand 'Modifying Storage Controller' "$runcmd"
+	runcommand "Modifying Storage Controller '$ctlName' on '$vm', Boot=$ctlBoot, Chip=$ctlChip, Ports=$ctlPcount" \
+		"vb_modstctl '$vm' '$ctlName' '$ctlBoot' '$ctlChip' '$ctlPcount'"
 	return
 }
 
@@ -132,7 +112,7 @@ modify_ctl() {
 remove_ctl() {
 	ctlName=$( getsctlname "$vm" $(pickasctl "$vm") )
 	[ $? = 0 ] || return 1
-	runcommand "Ready to remove storage Controller?" "vbman storagectl '$vm' --name '$ctlName' --remove"
+	runcommand "About to remove storage Controller '$ctlName' on '$vm'" "vb_delstctl '$vm' '$ctlName'"
 	return
 }
 
@@ -142,7 +122,7 @@ remove_ctl() {
 #
 list_ctl() {
 	tmpfile=$(mktemp)
-	vbman showvminfo $vm | grep '^Storage Controller' >$tmpfile
+	vb_showvminfo $vm | grep '^Storage Controller' >$tmpfile
 	if [ -s "$tmpfile" ]
 	then
 		vbdlg "$vm: Storage Controller(s)" --textbox "$tmpfile" 0 0

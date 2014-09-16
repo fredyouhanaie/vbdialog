@@ -11,6 +11,8 @@ pdir=$(dirname $0)
 
 export VBFUNCTIONS=1
 
+[ -n "$VBMANFUNCTIONS" ] || source $pdir/vbmanfunctions.sh
+
 #
 # vbdlg
 #	A wrapper for the standard dialog command.
@@ -28,33 +30,15 @@ vbdlg() {
 export -f vbdlg
 
 #
-# vbman
-#	A wrapper for VBoxManage
-#	Allows to control which VBoxManage sub-commands are run.
-#	can be used to log every single call.
-#
-vbman() {
-	[ $# -gt 1 ] || return 1
-	if [ -n "$VBTEST" ]
-	then
-		[ -n "$VBOXMANAGE" ] || source $pdir/vboxmanage.sh
-		vb_manage "$@"
-	else
-		VBoxManage "$@"
-	fi
-}
-export -f vbman
-
-#
 # getvmpar
 #	Given a vm and parameter name, return its current value.
 #	Strip away the double-quotes at the beginning and end, if any.
 #
 getvmpar() {
-	[ $# = 2 ] || return
-	vm=$1
-	par=$2
-	vbman showvminfo $vm --machinereadable |
+	[ $# = 2 ] || return 1
+	vm="$1"
+	par="$2"
+	vb_showvminfo -m "$vm" |
 		case "$par" in
 		rtcuseutc)
 			sed -ne "s/^Time offset=[0-9][0-9]*$par=\(.*\)$/\1/p"
@@ -74,22 +58,17 @@ runcommand() {
 	[ $# = 2 ] || return 1
 	title=$1
 	command=$2
-	vbdlg "$title" --aspect 20 --yesno "About to run\n\n$command\n\nOK to proceed?" 0 0
-	retvalue=$?
-	if [ "$retvalue" = 0 ]
-	then
-		clear
-		echo "$command" >&2
-		echo >&2
-		eval "$command"
-		res=$?
-		echo >&2
-		read -p "[result=$res]	PRESS ENTER TO CONTINUE"
-		echo >&2
-		return 0
-	else
-		return 1
-	fi
+	vbdlg "Confirm changes to VirtualBox" --aspect 20 --yesno "$title\n\nOK to proceed?" 0 0
+	[ "$?" = 0 ] || return 1
+	clear
+	echo "$command" >&2
+	echo >&2
+	eval "$command"
+	res=$?
+	echo >&2
+	read -p "[result=$res]	PRESS ENTER TO CONTINUE"
+	echo >&2
+	return 0
 }
 export -f runcommand
 
@@ -98,7 +77,7 @@ export -f runcommand
 #	generate a list of OS type IDs and quoted descriptions
 #
 getoslist() {
-	vbman list ostypes | egrep '^ID:|^Description:' | sed -e 's/^.*:  *//' |
+	vb_list ostypes | egrep '^ID:|^Description:' | sed -e 's/^.*:  *//' |
 	while read name
 	do
 		read desc
@@ -144,8 +123,7 @@ getnicparams() {
 	[ -n "$state" ] || return
 	echo "nic${nic} \"$state\""
 	[ "$state" = "none" ] && return
-	vbman showvminfo $vm --machinereadable |
-		egrep "^nic[^=]+${nic}=" | awk -F= '{print $1 " " $2}'
+	vb_showvminfo -m $vm | egrep "^nic[^=]+${nic}=" | awk -F= '{print $1 " " $2}'
 }
 export -f getnicparams
 
@@ -191,8 +169,9 @@ export -f modifynic
 # pickavm
 #	let the user pick a vm from the list
 #
+# TODO: check for empty vm list
 pickavm() {
-	VMLIST=$(vbman list vms | sed 's/["{}]//g' | sort)
+	VMLIST=$(vb_list vms | sed 's/["{}]//g' | sort)
 	vbdlg 'List of current VMs' \
 		--menu 'Select a VM, or <Cancel> to return' 0 0 0 $VMLIST
 	return
@@ -255,7 +234,7 @@ pickasctl() {
 	[ $# = 1 ] || return 1
 	vm="$1"
 	title="$vm: Current Storage Controllers"
-	ctlList=$(vbman showvminfo "$vm" --machinereadable |
+	ctlList=$(vb_showvminfo -m "$vm" |
 		grep '^storagecontrollername' |
 		sed -e 's/^storagecontrollername//' -e 's/ /_/' -e 's/=/ /')
 	if [ -n "$ctlList" ] 
@@ -288,7 +267,7 @@ export -f getsctlname
 #	get and return the default machine folder
 #
 getdeffolder() {
-	vbman list systemproperties |
+	vb_list systemproperties |
 		sed -ne 's/Default machine folder:  *//p'
 }
 export -f getdeffolder

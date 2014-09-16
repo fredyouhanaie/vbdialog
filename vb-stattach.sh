@@ -20,7 +20,7 @@ ctlattlist() {
 	[ $# = 2 ] || return 1
 	vm="$1"
 	ctlname="$2"
-	vbman showvminfo "$vm" --machinereadable |
+	vb_showvminfo -m "$vm" |
 	sed -ne "s/\"$ctlname-\([0-9][0-9]*-[0-9][0-9]*\)\"=\(\".*\"\)/\1 \2/p"
 	return
 }
@@ -34,16 +34,13 @@ do_attach() {
 	devlist=$(ctlattlist "$vm" "$ctlname") || return 1
 	while :
 	do
-		runcmd="vbman storageattach $vm --storagectl $ctlname"
 		portdev=$(vbdlg "$vm: $ctlname: Attach" \
 			--cancel-label 'Return' \
 			--menu "Select a device slot, or <Cancel> to return" 0 0 0 $devlist) || return 1
 		port=$(echo $portdev | cut -d- -f1)
 		dev=$(echo $portdev | cut -d- -f2)
-		runcmd="$runcmd --port $port --device $dev"
 		dtype=$( getselection "$vm: $ctlname: $portdev: Device Type?" \
 			'dvddrive fdd hdd' hdd ) || return 1
-		runcmd="$runcmd --type $dtype"
 		med=$( getselection "$vm: $ctlname: $portdevdev: Medium?" \
 			'additions emptydrive filename none' filename ) || return 1
 		if [ "$med" = filename ]
@@ -52,8 +49,8 @@ do_attach() {
 		else
 			medium="$med"
 		fi
-		runcmd="$runcmd --medium $medium"
-		runcommand "Storage Attach" "$runcmd" && break
+		runcommand "About to attach '$medium' to '$ctlname-$port-$dev' ($dtype) on '$vm'" \
+			"vb_stattach '$vm' '$ctlname' '$port' '$dev' '$dtype' '$medium'" && break
 	done
 	return
 }

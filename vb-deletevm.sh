@@ -18,13 +18,11 @@ pname=$(basename $0)
 : ${backtitle:="Virtual Box"}
 backtitle="$backtitle - Delete VM"
 
-VBDELETE='vbman unregistervm --delete'
-
 while :
 do
 	vm=$(pickavm)
 	[ $? = 0 ] || break
-	runcommand "Ready to Delete VM?" "$VBDELETE $vm"
+	runcommand "About to delete VM '$vm'!" "vb_deletevm '$vm'"
 	[ $? = 0 ] && break
 done
 
