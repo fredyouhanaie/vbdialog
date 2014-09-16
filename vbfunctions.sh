@@ -161,12 +161,17 @@ export -f modifynic
 # pickavm
 #	let the user pick a vm from the list
 #
-# TODO: check for empty vm list
 pickavm() {
 	VMLIST=$(vb_list vms | sed 's/["{}]//g' | sort)
-	vbdlg 'List of current VMs' \
-		--menu 'Select a VM, or <Cancel> to return' 0 0 0 $VMLIST
-	return
+	title='List of current VMs'
+	if [ -n "$VMLIST" ]
+	then
+		vbdlg "$title" --menu 'Select a VM, or <Cancel> to return' 0 0 0 $VMLIST
+		return
+	else
+		vbdlg "$title" --msgbox 'There are no VMs' 0 0
+		return 1
+	fi
 }
 export -f pickavm
 
