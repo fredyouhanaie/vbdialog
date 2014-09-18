@@ -30,6 +30,7 @@ do
 		--form 'Type a name,\n<OK> to create VM,\n<Cancel> to return to main menu' 0 0 0 \
 		name 1 1 "$VMName" 1 10 40 40 )
 	[ $? = 0 ] || break
+	[ -n "$vmname" ] || continue # loop if blank vm name
 	runcommand "About to Create VM '$vmname' ($OSType)" \
 		"vb_createvm '$vmname' $OSType"
 	[ $? = 0 ] && break
