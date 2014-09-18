@@ -158,15 +158,29 @@ modifynic() {
 export -f modifynic
 
 #
+# getvmlist
+#	generate a list of VM names and UUIDs
+#
+getvmlist() {
+	vb_list vms -l | egrep '^Name:|^UUID:' | sed -e 's/^.*:  *//' |
+	while read name
+	do
+		read uuid
+		echo "'$name' $uuid"
+	done | sort | tr '\n' ' '
+}
+export -f getvmlist
+
+#
 # pickavm
 #	let the user pick a vm from the list
 #
 pickavm() {
-	VMLIST=$(vb_list vms | sed 's/["{}]//g' | sort)
+	VMLIST=$(getvmlist)
 	title='List of current VMs'
 	if [ -n "$VMLIST" ]
 	then
-		vbdlg "$title" --menu 'Select a VM, or <Cancel> to return' 0 0 0 $VMLIST
+		eval "vbdlg '$title' --menu 'Select a VM, or <Cancel> to return' 0 0 0 $VMLIST"
 		return
 	else
 		vbdlg "$title" --msgbox 'There are no VMs' 0 0

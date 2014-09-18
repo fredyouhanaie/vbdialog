@@ -53,7 +53,7 @@ export -f vb_createhd
 #
 vb_createvm() {
 	[ $# = 2 ] || return 1
-	vbman createvm --name "'$1'" --ostype "'$2'" --register
+	vbman createvm --name "$1" --ostype "$2" --register
 }
 export -f vb_createvm
 
@@ -69,12 +69,13 @@ vb_deletevm() {
 export -f vb_deletevm
 
 
-# vb_list <choice>
+# vb_list <choice> [-l]
 #	run the vboxmanage list command
 #
 vb_list() {
-	[ $# = 1 ] || return 1
-	vbman list "$1"
+	[ $# = 1 -o $# = 2 ] || return 1
+	[ $# = 2 -a "$2" != '-l' ] && return 1
+	vbman list "$1" $2
 }
 export -f vb_list
 
