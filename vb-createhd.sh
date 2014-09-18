@@ -32,7 +32,7 @@ do
 		param=$(vbdlg 'Create HD' \
 			--extra-button --extra-label 'OK' --ok-label 'Change' \
 			--cancel-label 'Return' \
-			--menu '<Change> parameter, or <Cancel> to return' 0 0 0 \
+			--menu '<Change> selected parameter,\n<OK> to apply current settings,\nor <Return> to upper menu' 0 0 0 \
 			File "$HDfile" Size "$HDsize MB" Format "$HDformat")
 		retval=$?
 		[ $retval = 3 ] && break

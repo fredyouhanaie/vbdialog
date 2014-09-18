@@ -29,7 +29,7 @@ do
 	nic=$(vbdlg "$VMName: NIC selection" \
 		--default-item 1 \
 		--cancel-label 'Return' \
-		--menu 'Select a NIC, or <Cancel> to return' 0 0 0 \
+		--menu 'Select a NIC, or\n<Return> for Modify menu' 0 0 0 \
 		$NIClist)
 	[ $? = 0 ] || break
 
@@ -38,7 +38,8 @@ do
 		### get the NIC params
 		nicparams=$(getnicparams $VMName $nic)
 		nicpar=$(vbdlg "$VMName: NIC${nic} settings" \
-			--menu 'Select param, or <Cancel> to return' 0 0 0 $nicparams)
+			--cancel-label 'Return' \
+			--menu '<OK> to modify selected paramer, or\n<Return> for NIC menu' 0 0 0 $nicparams)
 		[ $? = 0 ] || break
 		# get the par value
 		case "$nicpar" in

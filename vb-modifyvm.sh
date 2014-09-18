@@ -23,9 +23,9 @@ vm=$(pickavm)
 
 while :
 do
-	param=$(vbdlg "VM parameter for $vm" \
+	param=$(vbdlg "VM parameter groups for $vm" \
 		--cancel-label 'Return' \
-		--menu 'Select Parameter, or <Cancel> to return' 0 0 0 \
+		--menu '<OK> to modify selected group, or\n <Return> for Main menu' 0 0 0 \
 		net	'Network settings' \
 		system	'System settings' \
 		vrde	'VRDE settings' \
