@@ -25,21 +25,16 @@ while :
 do
 	OSType=$(getostype $OSType)
 	[ $? = 0 ] || break
-	formdata=$(vbdlg 'Create VM' \
-		--cancel-label 'Return' \
-		--form 'Note: I do not like whitespace in names!' 0 0 0 \
-		name 1 1 "$VMName" 1 10 40 40 \
-		ostype 2 1 "$OSType" 2 10 40 40 )
+	vmname=$(vbdlg "Create VM ($OSType)" \
+		--cancel-label 'Cancel' \
+		--form 'Type a name,\n<OK> to create VM,\n<Cancel> to return to main menu' 0 0 0 \
+		name 1 1 "$VMName" 1 10 40 40 )
 	[ $? = 0 ] || break
-	set -- $formdata
-	vmname=$1
-	ostype=$2
-	runcommand "About to Create VM '$vmname' ($ostype)" \
-		"vb_createvm '$vmname' $ostype"
+	runcommand "About to Create VM '$vmname' ($OSType)" \
+		"vb_createvm '$vmname' $OSType"
 	[ $? = 0 ] && break
 	# so the master said NO, back to the form with current data
 	VMName="$vmname"
-	OSType="$ostype"
 done
 
 clearexit 0

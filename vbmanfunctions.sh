@@ -53,7 +53,7 @@ export -f vb_createhd
 #
 vb_createvm() {
 	[ $# = 2 ] || return 1
-	vbman createvm --name "$1" --ostype "$2" --register
+	vbman createvm --name "'$1'" --ostype "'$2'" --register
 }
 export -f vb_createvm
 
