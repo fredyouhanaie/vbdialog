@@ -32,7 +32,7 @@ do
 
 	choice=$(vbdlg "$VMName: System settings" \
 		--cancel-label 'Return' \
-		--menu 'Choose parameter, or <Cancel> to return' 0 0 0 \
+		--menu '<OK> to modify parameter, or\n<Return> for Modify menu' 0 0 0 \
 			'memory'	"$VMmemory" \
 			'pae'		"$VMpae" \
 			'rtcuseutc'	"$VMrtcuseutc" \

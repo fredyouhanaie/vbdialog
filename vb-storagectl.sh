@@ -25,8 +25,8 @@ add_ctl() {
 	do
 		param=$(vbdlg "$vm: Adding Storage Controller" \
 			--extra-button --extra-label 'OK' --ok-label 'Change' \
-			--cancel-label 'Return' \
-			--menu 'Set parameters, or <Cancel> to return' 0 0 0 \
+			--cancel-label 'Cancel' \
+			--menu '<Change> to set the parameters,\n<OK> to apply the change,or\n<Cancel> to return' 0 0 0 \
 			Name	"$ctlName" \
 			Type	"$ctlType" \
 			Chip	"$ctlChip")
@@ -79,7 +79,8 @@ modify_ctl() {
 	do
 		param=$(vbdlg "$vm: Modifying $ctlName" \
 			--extra-button --extra-label 'OK' --ok-label 'Change' \
-			--menu 'Set parameters, or <Cancel> to return' 0 0 0 \
+			--cancel-label 'Cancel' \
+			--menu '<Change> to set the parameters,\n<OK> to apply the change,or\n<Cancel> to return' 0 0 0 \
 			Boot	"$ctlBoot" \
 			Chip	"$ctlChip" \
 			Ports	"$ctlPcount" )
@@ -144,8 +145,9 @@ vm=$(pickavm)
 while :
 do
 	cmd=$(vbdlg "$vm: Storage Controller" \
+		--cancel-label 'Return' \
 		--default-item list \
-		--menu 'Select option, or <Cancel> to return' 0 0 0 \
+		--menu 'Select option, or\n<Return> for Main menu' 0 0 0 \
 		add	'Add a Controller' \
 		list	'List Storage Controllers' \
 		modify	'Modify Controller parameters' \

@@ -39,7 +39,7 @@ do
 		nicparams=$(getnicparams $VMName $nic)
 		nicpar=$(vbdlg "$VMName: NIC${nic} settings" \
 			--cancel-label 'Return' \
-			--menu '<OK> to modify selected paramer, or\n<Return> for NIC menu' 0 0 0 $nicparams)
+			--menu '<OK> to modify parameter, or\n<Return> for NIC menu' 0 0 0 $nicparams)
 		[ $? = 0 ] || break
 		# get the par value
 		case "$nicpar" in
@@ -51,7 +51,8 @@ do
 			newvalue=$(modifynicmenu $VMName $nicpar "2540EM 82543GC 82545EM Am79C970A Am79C973 virtio")
 			retval=$?
 			;;
-		*)	retval=1
+		*)	vbdlg 'No action taken' --msgbox "Sorry, '$nicpar' is not catered for yet!" 5 64
+			retval=1
 		esac
 		[ "$retval" = 0 ] || break
 		runcommand "About to modify NIC parameter on '$VMName' ($nicpar/$newvalue)" \

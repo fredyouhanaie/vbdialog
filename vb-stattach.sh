@@ -35,8 +35,8 @@ do_attach() {
 	while :
 	do
 		portdev=$(vbdlg "$vm: $ctlname: Attach" \
-			--cancel-label 'Return' \
-			--menu "Select a device slot, or <Cancel> to return" 0 0 0 $devlist) || return 1
+			--cancel-label 'Cancel' \
+			--menu "Select a device slot, or\n<Cancel> to return" 0 0 0 $devlist) || return 1
 		port=$(echo $portdev | cut -d- -f1)
 		dev=$(echo $portdev | cut -d- -f2)
 		dtype=$( getselection "$vm: $ctlname: $portdev: Device Type?" \
@@ -79,8 +79,9 @@ vm=$(pickavm)
 while :
 do
 	param=$(vbdlg "$vm: Storage Attachment" \
+		--cancel-label 'Return' \
 		--default-item list \
-		--menu 'Select option, or <Cancel> to return' 0 0 0 \
+		--menu 'Select option, or\n<Return> for Main menu' 0 0 0 \
 		attach	'Attach/remove a device'  \
 		list	'List attached devices' )
 	[ $? = 0 ] || break

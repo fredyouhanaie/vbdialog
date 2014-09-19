@@ -41,8 +41,9 @@ while :
 do
 	choice=$(vbdlg "$VMName: VRDE settings" \
 		--default-item list \
-		--menu 'Choose option, or <Cancel> to return' 0 0 0 \
-			'disable'	'Enable VRDE' \
+		--cancel-label 'Return' \
+		--menu 'Choose option, or\n<Return> for Modify menu' 0 0 0 \
+			'disable'	'Disable VRDE' \
 			'enable'	'Enable VRDE' \
 			'list'		'List current settings' \
 			'ports'		'Select ports' \

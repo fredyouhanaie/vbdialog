@@ -86,7 +86,7 @@ getostype() {
 	defaultos=$1
 	: ${defaultos:=Linux26}
 	eval "vbdlg 'Current OS Types' --default-item '$defaultos' \
-		--menu 'Select OS type, or <Cancel> to return' 0 0 0 \
+		--menu 'Select OS type, or\n<Cancel> to return' 0 0 0 \
 		$(getoslist)"
 	return $?
 }
@@ -136,14 +136,14 @@ modifynicmenu() {
 	value=$(getvmpar $vm $nicpar)
 	[ $? = 0 ] || return 1
 	vbdlg "$vm: $nicpar" \
-		--default-item $value --menu 'Select new value, or <Cancel> to return' 0 0 0 \
+		--default-item $value --menu 'Select new value, or\n<Cancel> to return' 0 0 0 \
 		$menulist
 	return
 }
 export -f modifynicmenu
 
 #
-# modifynicinput
+# modifynic
 modifynic() {
 	[ $# = 2 ] || return 1
 	vm="$1"
@@ -151,7 +151,7 @@ modifynic() {
 	value=$(getvmpar $vm $nicpar)
 	[ $? = 0 ] || return 1
 	vbdlg "$vm $nicpar" \
-		--form 'Enter a new value, or <Cancel> to return' 0 0 0 \
+		--form 'Enter a new value, or\n<Cancel> to return' 0 0 0 \
 		"$nicpar" 1 1 "$value" 1 10 10 10
 	return
 }
@@ -180,7 +180,7 @@ pickavm() {
 	title='List of current VMs'
 	if [ -n "$VMLIST" ]
 	then
-		eval "vbdlg '$title' --menu 'Select a VM, or <Cancel> to return' 0 0 0 $VMLIST"
+		eval "vbdlg '$title' --menu 'Select a VM, or\n<Cancel> to return' 0 0 0 $VMLIST"
 		return
 	else
 		vbdlg "$title" --msgbox 'There are no VMs' 0 0
@@ -211,7 +211,7 @@ export -f getfilename
 getstring() {
 	[ $# = 2 ] || return 1
 	vbdlg "$1" \
-		--inputbox 'Enter value, or <Cancel> to return' 0 0 "$2"
+		--inputbox '<OK> to apply value, or\n<Cancel> to return' 0 0 "$2"
 	return
 }
 export -f getstring
@@ -230,7 +230,7 @@ getselection() {
 	default="$3"
 	menulist=$( for v in $vlist; do echo -n "$v $v "; done)
 	vbdlg "$title" \
-		--default-item "$default" --menu 'Select new value, or <Cancel> to return' 0 0 0 \
+		--default-item "$default" --menu 'Select an option, or\n<Cancel> to return' 0 0 0 \
 		$menulist
 	return
 }
@@ -251,7 +251,7 @@ pickasctl() {
 	if [ -n "$ctlList" ] 
 	then
 		vbdlg "$title" \
-			--menu 'Select a Storage Controller, or <Cancel> to return' 0 0 0 $ctlList
+			--menu 'Select a Storage Controller, or\n<Cancel> to return' 0 0 0 $ctlList
 		return
 	else
 		vbdlg "$title" --msgbox 'There are no Storage Controllers!' 5 44

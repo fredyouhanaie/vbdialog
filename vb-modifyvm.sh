@@ -25,7 +25,7 @@ while :
 do
 	param=$(vbdlg "VM parameter groups for $vm" \
 		--cancel-label 'Return' \
-		--menu '<OK> to modify selected group, or\n <Return> for Main menu' 0 0 0 \
+		--menu '<OK> to modify group, or\n<Return> for Main menu' 0 0 0 \
 		net	'Network settings' \
 		system	'System settings' \
 		vrde	'VRDE settings' \
