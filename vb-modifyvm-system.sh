@@ -16,7 +16,7 @@ pname=$(basename $0)
 #	set the background title, unless already set by caller
 #
 : ${backtitle:="Virtual Box - Modify VM"}
-backtitle="$backtitle - VRDE"
+backtitle="$backtitle - System"
 
 # we expect one arg, the VM name
 [ $# != 1 ] && clearexit 1
