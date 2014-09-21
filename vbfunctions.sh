@@ -197,7 +197,7 @@ export -f pickavm
 #
 getfilename() {
 	[ $# = 2 ] || return 1
-	vbdlg "$1" --fselect "$2" 0 0
+	vbdlg "$1" --fselect "$2" 10 54
 	return
 }
 export -f getfilename
