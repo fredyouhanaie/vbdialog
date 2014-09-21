@@ -162,12 +162,8 @@ export -f modifynic
 #	generate a list of VM names and UUIDs
 #
 getvmlist() {
-	vb_list vms -l | egrep '^Name:|^UUID:' | sed -e 's/^.*:  *//' |
-	while read name
-	do
-		read uuid
-		echo "'$name' $uuid"
-	done | sort | tr '\n' ' '
+	vb_list vms | awk -F'{' '{print $1 " " $2}' |
+	sed -e 's/}//' | sort | tr '\n' ' '
 }
 export -f getvmlist
 
