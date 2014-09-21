@@ -152,7 +152,7 @@ modifynic() {
 	[ $? = 0 ] || return 1
 	vbdlg "$vm $nicpar" \
 		--form 'Enter a new value, or\n<Cancel> to return' 0 0 0 \
-		"$nicpar" 1 1 "$value" 1 10 10 10
+		"$nicpar" 1 1 "$value" 1 15 15 15
 	return
 }
 export -f modifynic

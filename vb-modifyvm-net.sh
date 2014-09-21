@@ -51,6 +51,10 @@ do
 			newvalue=$(modifynicmenu $VMName $nicpar "2540EM 82543GC 82545EM Am79C970A Am79C973 virtio")
 			retval=$?
 			;;
+		nicspeed?)
+			newvalue=$(modifynic $VMName $nicpar)
+			retval=$?
+			;;
 		*)	vbdlg 'No action taken' --msgbox "Sorry, '$nicpar' is not catered for yet!" 5 64
 			retval=1
 		esac
