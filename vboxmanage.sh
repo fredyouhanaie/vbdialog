@@ -37,7 +37,7 @@ export -f vb_manage
 #
 vbman_default() {
 	echo "TEST MODE"
-	echo "	VBoxManager $@"
+	echo "	VBoxManager" "$@"
 	echo "TEST MODE"
 }
 
@@ -56,10 +56,10 @@ vbman_list() {
 	obj=$1
 	case "$obj" in
 	vms|ostypes|systemproperties)
-		vbman_list_$obj
+		"vbman_list_$obj"
 		;;
 	*)
-		vbman_list_default $obj
+		vbman_list_default "$obj"
 		;;
 	esac
 }
